@@ -1,12 +1,13 @@
 import type { ExportObj } from '../models/types.ts'
 import Deck from '../models/deck.ts'
 import Note, { NoteData } from '../models/note.ts'
+import sortByColumns from '../utils/sort_by_columns.ts'
 
 export default function fromObj(obj: ExportObj): Deck {
   const { id, name, desc, columns, meta, notes } = obj
   const deck = new Deck({ id, name, desc, meta })
 
-  deck.notes = notes.map((row) => {
+  deck.notes = notes.sort(sortByColumns).map((row) => {
     const data: NoteData = {}
     row.forEach((value, i) => {
       if (typeof columns[i] != 'string') {

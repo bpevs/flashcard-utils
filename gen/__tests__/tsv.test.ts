@@ -1,9 +1,11 @@
+import { assertEquals } from 'jsr:@std/assert'
 import { assertSnapshot } from 'jsr:@std/testing/snapshot'
-import fromJSON from '../from_json.ts'
-import toJSON from '../to_json.ts'
+import fromObj from '../from_obj.ts'
+import fromTSV from '../from_tsv.ts'
+import toTSV from '../to_tsv.ts'
 
 Deno.test('init Deck to/from JSON', async (t) => {
-  const deck = fromJSON(JSON.stringify({
+  const deck = fromObj({
     id: 'zh-HK',
     name: '中文（普通话）',
     desc: 'Flashcards for Chinese',
@@ -23,6 +25,15 @@ Deno.test('init Deck to/from JSON', async (t) => {
       ['body', '身体', '🦶', '脚', 'foot', 'jiǎo'],
       ['animal', '动物', '🐈', '猫', 'cat', 'māo'],
     ],
-  }))
-  await assertSnapshot(t, toJSON(deck))
+  })
+  const tsvResult = toTSV(deck)
+  await assertSnapshot(t, tsvResult)
+  const tsvDeck = fromTSV(tsvResult, {
+    id: deck.id,
+    name: deck.name,
+    desc: deck.desc,
+    meta: deck.meta,
+  })
+
+  assertEquals(deck.notes, tsvDeck.notes)
 })

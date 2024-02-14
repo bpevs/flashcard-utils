@@ -1,4 +1,4 @@
-import Note, { NoteData } from './note.ts'
+import Note from './note.ts'
 import type { Meta } from './types.ts'
 
 // A `Deck` represents a collection of notes.
@@ -26,7 +26,7 @@ export default class Deck {
 }
 
 function encode(str: string): number {
-  let num: string = ""
+  let num = ''
   for (let i = 0; i < str.length; i++) {
     num = num + String(str.charCodeAt(i))
   }
