@@ -1,0 +1,7 @@
+{
+  "fmt": {
+    "proseWrap": "never",
+    "singleQuote": true,
+    "semiColons": false
+  }
+}
