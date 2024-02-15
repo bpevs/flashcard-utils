@@ -3,7 +3,7 @@ import { assertSnapshot } from 'jsr:@std/testing/snapshot'
 import fromObj from '../from_obj.ts'
 import fromTSV from '../from_tsv.ts'
 import toTSV from '../to_tsv.ts'
-import data from './__data__/zh_CN.js'
+import data from './__data__/zh_CN.ts'
 
 Deno.test('init Deck to/from JSON', async (t) => {
   const deck = fromObj(data)

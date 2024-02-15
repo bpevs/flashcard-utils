@@ -1,7 +1,7 @@
 import { assertEquals } from 'jsr:@std/assert'
 import fromObj from '../from_obj.ts'
 import toObj from '../to_obj.ts'
-import deckData from './__data__/zh_CN.js'
+import deckData from './__data__/zh_CN.ts'
 
 Deno.test('init Deck to/from obj', () => {
   assertEquals(toObj(fromObj(deckData)), deckData)
