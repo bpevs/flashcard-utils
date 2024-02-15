@@ -4,18 +4,20 @@ import fromObj from './from_obj.ts'
 
 export default function fromTSV(
   tsv: string,
-  data: {
-    id: string
-    name: string
-    desc: string
-    key: string
-    meta?: Meta
+  options: {
+    meta: {
+      id: string
+      name: string
+      desc: string
+      key: string
+      meta?: Meta
+    }
   },
 ): Deck {
   const [columnRow, ...noteRows] = tsv.split('\n')
   const columns = columnRow.split('\t')
   return fromObj({
-    ...data,
+    ...options.meta,
     columns,
     notes: noteRows
       .map((row) => row.split('\t'))

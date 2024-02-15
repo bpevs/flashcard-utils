@@ -1,6 +1,6 @@
 export const snapshot = {};
 
-snapshot[`init Deck to/from JSON 1`] = `
+snapshot[`init Deck to/from TSV 1`] = `
 "category_en	category	emoji	text	text_en	pinyin
 animal	动物	🐶	狗	dog	gǒu
 animal	动物	🐈	猫	cat	māo
