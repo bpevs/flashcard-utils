@@ -3,5 +3,9 @@
     "proseWrap": "never",
     "singleQuote": true,
     "semiColons": false
+  },
+  "tasks": {
+    "test": "deno fmt && deno lint && deno test -A",
+    "dev": "deno run --allow-read --allow-write --allow-net --watch app/main.tsx"
   }
 }
