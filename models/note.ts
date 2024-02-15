@@ -10,7 +10,7 @@ export default class Note {
   attachments: { [key: string]: string }
   data: NoteData
 
-  constructor({ id, data }: { id: string, data: NoteData }) {
+  constructor({ id, data }: { id: string; data: NoteData }) {
     this.id = id
     this.data = data
     this.attachments = {}
