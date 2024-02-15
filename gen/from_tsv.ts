@@ -8,6 +8,7 @@ export default function fromTSV(
     id: string
     name: string
     desc: string
+    key: string
     meta?: Meta
   },
 ): Deck {

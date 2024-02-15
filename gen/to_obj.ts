@@ -7,6 +7,7 @@ export default function toObj(deck: Deck): ExportObj {
     name: deck.name,
     desc: deck.desc,
     meta: deck.meta,
+    key: deck.key,
     columns: Object.keys(deck.notes[0].data),
     notes: [],
   }

@@ -7,10 +7,12 @@ export interface NoteData {
 // A note may contain multiple cards
 export default class Note {
   id: string
+  attachments: { [key: string]: string }
   data: NoteData
 
-  constructor({ data }: { data: NoteData }) {
-    this.id = 'some-card-id'
+  constructor({ id, data }: { id: string, data: NoteData }) {
+    this.id = id
     this.data = data
+    this.attachments = {}
   }
 }

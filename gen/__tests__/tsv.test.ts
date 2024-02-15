@@ -19,6 +19,7 @@ Deno.test('init Deck to/from JSON', async (t) => {
       locale_flag: '🇨🇳',
       voice_id_azure: 'zh-CN-XiaoxiaoNeural',
     },
+    key: "emoji",
     columns: ['category_en', 'category', 'emoji', 'text', 'text_en', 'pinyin'],
     notes: [
       ['animal', '动物', '🐶', '狗', 'dog', 'gǒu'],
@@ -32,6 +33,7 @@ Deno.test('init Deck to/from JSON', async (t) => {
     id: deck.id,
     name: deck.name,
     desc: deck.desc,
+    key: deck.key,
     meta: deck.meta,
   })
 

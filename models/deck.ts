@@ -7,13 +7,15 @@ export default class Deck {
   idNum: number // For exports that use id number (Anki)
   name: string
   desc: string
+  key: string // Unique key of each Note. Used to create Note id
   notes: Note[]
   meta?: { [key: string]: string | number }
 
-  constructor({ id, name, desc, meta }: {
+  constructor({ id, name, desc, key, meta }: {
     id: string
     name: string
     desc: string
+    key: string
     meta?: Meta
   }) {
     this.id = id
@@ -21,6 +23,7 @@ export default class Deck {
     this.name = name
     this.desc = desc
     this.notes = []
+    this.key = key
     if (meta) this.meta = meta
   }
 }
