@@ -6,7 +6,7 @@ export interface Scheduling {
   interval?: number
   repetition?: number
   efactor?: number
-  due?: Date
+  lastStudied?: Date
 }
 
 // A visual representation of a Note. A card contains no actual data.

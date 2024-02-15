@@ -29,11 +29,13 @@ app.get('/', (c) => {
           question={card ? card.renderQuestion() : 'No Cards Left'}
           answer={card ? card.renderAnswer() : ''}
         />
-        <div>
-          <a href='/answer/0'>hard</a>
-          <a href='/answer/3'>normal</a>
-          <a href='/answer/5'>easy</a>
-        </div>
+        {!card ? '' : (
+          <div>
+            <a href='/answer/0'>hard</a>
+            <a href='/answer/3'>normal</a>
+            <a href='/answer/5'>easy</a>
+          </div>
+        )}
 
         <script type='module'>
           {html`
