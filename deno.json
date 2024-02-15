@@ -6,6 +6,7 @@
   },
   "tasks": {
     "test": "deno fmt && deno lint && deno test -A",
-    "dev": "deno run --allow-read --allow-write --allow-net --watch app/main.tsx"
+    "test:update": "deno test -A -- --update",
+    "dev": "deno run --allow-read --allow-write --allow-net --watch sandbox/main.tsx"
   }
 }

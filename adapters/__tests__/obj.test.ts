@@ -12,11 +12,20 @@ Deno.test('Should sort notes in order of column', () => {
     ...deckData,
     // Mess up order of notes
     notes: [
-      ['animal', '动物', '🐶', '狗', 'dog', 'gǒu'],
-      ['body', '身体', '🦶', '脚', 'foot', 'jiǎo'],
-      ['animal', '动物', '🐈', '猫', 'cat', 'māo'],
+      ['animal', '🐈', '猫', 'māo'],
+      ['color', '🟢', '绿', 'lǜ'],
+      ['animal', '🐶', '狗', 'gǒu'],
+      ['number', '8️⃣', '八', 'bā'],
+      ['body', '🦶', '脚', 'jiǎo'],
+      ['directions', '⬇️🍂', '下', 'xià'],
+      ['food', '🧊', '冰', 'bīng'],
+      ['number', '7️⃣', '七', 'qī'],
+      ['transportation', '🚗', '汽车', 'qì chē'],
+      ['number', '9️⃣', '九', 'jiǔ'],
+      ['verbs', '❤️😍', '爱', 'ài'],
     ],
   }
+
   // Expect to equal original deckData
   assertEquals(toObj(fromObj(data)), deckData)
 })

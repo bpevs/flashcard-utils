@@ -7,7 +7,7 @@ export default function fromObj(obj: ExportObj): Deck {
   const { id: deckId, name, desc, columns, key, meta, notes } = obj
   const deck = new Deck({ id: deckId, name, key, desc, meta })
 
-  deck.notes = notes.sort(sortByColumns).map((row) => {
+  deck.notes = notes.toSorted(sortByColumns).map((row) => {
     const content: Content = {}
     row.forEach((value, i) => {
       if (typeof columns[i] != 'string') {

@@ -1,10 +1,12 @@
+import Deck from './deck.ts'
 import Note from './note.ts'
 import Template from './template.ts'
 
-interface Scheduling {
+export interface Scheduling {
   interval?: number
   repetition?: number
   efactor?: number
+  due?: Date
 }
 
 // A visual representation of a Note. A card contains no actual data.
@@ -27,5 +29,18 @@ export default class Card {
     this.note = note
     this.template = template
     this.scheduling = scheduling
+  }
+
+  renderQuestion() {
+    return this.template.renderQuestion(this.note.content)
+  }
+
+  renderAnswer() {
+    return this.template.renderAnswer(this.note.content)
+  }
+
+  answer(deck: Deck, quality: 0 | 1 | 2 | 3 | 4 | 5) {
+    this.scheduling = deck.scheduler.update(this.scheduling, quality)
+    return this
   }
 }

@@ -1,9 +1,17 @@
 export const snapshot = {};
 
 snapshot[`init Deck to/from TSV 1`] = `
-"category_en	category	emoji	text	text_en	pinyin
-animal	动物	🐶	狗	dog	gǒu
-animal	动物	🐈	猫	cat	māo
-body	身体	🦶	脚	foot	jiǎo
+"category	emoji	text	pinyin
+animal	🐈	猫	māo
+animal	🐶	狗	gǒu
+body	🦶	脚	jiǎo
+color	🟢	绿	lǜ
+directions	⬇️🍂	下	xià
+food	🧊	冰	bīng
+number	7️⃣	七	qī
+number	8️⃣	八	bā
+number	9️⃣	九	jiǔ
+transportation	🚗	汽车	qì chē
+verbs	❤️😍	爱	ài
 "
 `;
