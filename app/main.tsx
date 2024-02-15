@@ -15,16 +15,16 @@ app.get('/', (c) => {
 
   return c.html(
     <html>
-      <language-flashcard
+      <flash-card
         id='flashcard'
-        question={note.data.emoji}
-        answer={note.data.text}
+        question={note.content.emoji}
+        answer={note.content.text}
       />
 
       <script type='module'>
         {html`
         import Flashcard from './components/flashcard.js'
-        customElements.define("language-flashcard", Flashcard);
+        customElements.define("flash-card", Flashcard);
 
         let showCard = false
         const cardEl = document.getElementById('flashcard')

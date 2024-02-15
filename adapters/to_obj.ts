@@ -8,17 +8,17 @@ export default function toObj(deck: Deck): ExportObj {
     desc: deck.desc,
     meta: deck.meta,
     key: deck.key,
-    columns: Object.keys(deck.notes[0].data),
+    columns: Object.keys(deck.notes[0].content),
     notes: [],
   }
 
   if (!deck.meta) delete deck.meta
 
   data.notes = deck.notes.map((note) => {
-    if (Object.keys(note.data).length !== data.columns.length) {
+    if (Object.keys(note.content).length !== data.columns.length) {
       throw new Error(`Mismatched column length, row: ${note.id}`)
     }
-    return data.columns.map((key) => note.data[key])
+    return data.columns.map((key) => note.content[key])
   })
 
   return data
