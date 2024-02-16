@@ -106,14 +106,13 @@ export async function writeToArray(
   sortField: string | void,
   media: Media = [],
 ) {
-  const fields = deck.content.fields
+  const { id, content } = deck
+  const { fields = [], watch = [] } = content
   const sortFieldIndex = Math.max(sortField ? fields.indexOf(sortField) : 0, 0)
   const fieldNames = fields.map((name) => ({ name }))
   fieldNames.unshift(fieldNames.splice(sortFieldIndex, 1)[0])
 
-  const guidComponentNames = (deck.content.watch?.length || 0)
-    ? (deck.content.watch || [])
-    : (deck.content.fields || [])
+  const guidComponentNames = [id].concat((watch.length) ? watch : fields)
 
   const decksArr: Array<{
     id: number

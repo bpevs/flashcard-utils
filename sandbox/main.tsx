@@ -10,7 +10,7 @@ import Template from '../models/template.ts'
 
 const app = new Hono()
 
-const deck = fromObj(data)
+const deck = fromObj(data, { sortField: 'emoji' })
 const template = new Template('basic', '{{emoji}}', '{{text}}')
 Object.values(deck.notes).forEach((note) => {
   note.templates.push(template)
