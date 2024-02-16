@@ -7,12 +7,13 @@ export default function fromObj(
   obj: ExportObj,
   { sortField }: { sortField?: string } = {},
 ): Deck {
-  const { id, name, desc, content, meta, notes } = obj
+  const { id, idNum, name, desc, content, meta, notes } = obj
   const { fields, watch } = content
   const sortFieldIndex = sortField ? fields.indexOf(sortField) : -1
 
   const deck = new Deck({
     id,
+    idNum,
     desc,
     name,
     content: { fields, watch },

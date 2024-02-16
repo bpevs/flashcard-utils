@@ -7,6 +7,7 @@ export default function toObj(deck: Deck): ExportObj {
 
   const data: ExportObj = {
     id: deck.id,
+    idNum: deck.idNum,
     name: deck.name,
     desc: deck.desc,
     meta: deck.meta,

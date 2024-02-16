@@ -2,6 +2,7 @@ export type Meta = { [key: string]: string }
 
 export interface ExportObj {
   id: string
+  idNum?: number
   name: string
   desc: string
   meta?: Meta

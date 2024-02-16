@@ -1,5 +1,6 @@
 export default Object.freeze({
   id: 'zh-CN',
+  idNum: 1221044567,
   name: '中文（普通话）',
   desc: 'Flashcards for Chinese',
   meta: {
