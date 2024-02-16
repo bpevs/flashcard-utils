@@ -4,7 +4,8 @@ import toObj from '../to_obj.ts'
 import deckData from './__data__/zh_CN.ts'
 
 Deno.test('init Deck to/from obj', () => {
-  assertEquals(toObj(fromObj(deckData)), deckData)
+  const deck = fromObj(deckData, { sortField: 'emoji' })
+  assertEquals(toObj(deck), deckData)
 })
 
 Deno.test('Should sort notes in order of column', () => {
@@ -27,5 +28,6 @@ Deno.test('Should sort notes in order of column', () => {
   }
 
   // Expect to equal original deckData
-  assertEquals(toObj(fromObj(data)), deckData)
+  const deck = fromObj(data, { sortField: 'emoji' })
+  assertEquals(toObj(deck), deckData)
 })

@@ -12,8 +12,10 @@ export default Object.freeze({
     locale_flag: '🇨🇳',
     voice_id_azure: 'zh-CN-XiaoxiaoNeural',
   },
-  key: 'emoji',
-  columns: ['category', 'emoji', 'text', 'pinyin'],
+  content: {
+    fields: ['category', 'emoji', 'text', 'pinyin'],
+    watch: [],
+  },
   notes: [
     ['animal', '🐈', '猫', 'māo'],
     ['animal', '🐶', '狗', 'gǒu'],

@@ -4,14 +4,15 @@
 import { crypto } from 'https://deno.land/std@0.200.0/crypto/crypto.ts'
 import initSqlJs from 'npm:sql.js'
 import JSZip from 'npm:jszip'
-
-import toObj from './to_obj.ts'
 import Deck from '../models/deck.ts'
 
 type Media = Array<{ name: string; data: Blob }>
 
-export default function toAPKG(deck: Deck, media?: Media): Promise<Uint8Array> {
-  return writeToArray(deck, media)
+export default function toAPKG(
+  deck: Deck,
+  options: { sortField?: string; media?: Media } = {},
+): Promise<Uint8Array> {
+  return writeToArray(deck, options.sortField, options.media)
 }
 
 /**
@@ -100,11 +101,15 @@ const defaultDeck: DeckProps = {
   extendRev: 50,
 }
 
-export async function writeToArray(deck: Deck, media: Media = []) {
-  const obj = toObj(deck)
-  const mainFieldIndex = obj.columns.indexOf(deck.key)
-  const fieldNames = obj.columns.map((name) => ({ name }))
-  fieldNames.unshift(fieldNames.splice(mainFieldIndex, 1)[0])
+export async function writeToArray(
+  deck: Deck,
+  sortField: string | void,
+  media: Media = [],
+) {
+  const fields = deck.content.fields
+  const sortFieldIndex = Math.max(sortField ? fields.indexOf(sortField) : 0, 0)
+  const fieldNames = fields.map((name) => ({ name }))
+  fieldNames.unshift(fieldNames.splice(sortFieldIndex, 1)[0])
 
   const decksArr: Array<{
     id: number
@@ -120,7 +125,7 @@ export async function writeToArray(deck: Deck, media: Media = []) {
     id: deck.idNum,
     name: deck.name,
     desc: deck.desc,
-    notes: deck.notes.map((note) => ({
+    notes: Object.values(deck.notes).map((note) => ({
       model: {
         id: deck.idNum || 0,
         name: deck.name || '',

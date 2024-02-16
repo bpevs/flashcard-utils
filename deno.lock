@@ -4,6 +4,7 @@
     "specifiers": {
       "jsr:@std/assert": "jsr:@std/assert@0.215.0",
       "jsr:@std/assert@^0.215.0": "jsr:@std/assert@0.215.0",
+      "jsr:@std/collections": "jsr:@std/collections@0.216.0",
       "jsr:@std/fmt@^0.215.0": "jsr:@std/fmt@0.215.0",
       "jsr:@std/fs@^0.215.0": "jsr:@std/fs@0.215.0",
       "jsr:@std/path@^0.215.0": "jsr:@std/path@0.215.0",
@@ -262,6 +263,8 @@
     "https://jsr.io/@std/assert/0.215.0/mod.ts": "325df8c0683ad83a873b9691aa66b812d6275fc9fec0b2d180ac68a2c5efed3b",
     "https://jsr.io/@std/assert/0.215.0/unimplemented.ts": "ed3115f6fb271277e0522f3b18f020259900c385e3fa986f109a519a1cf25763",
     "https://jsr.io/@std/assert/0.215.0/unreachable.ts": "1e748f69f73c57f4de9ba1dba39306b86e0ad2c0915975608519a2bcf42c262f",
+    "https://jsr.io/@std/collections/0.216.0/_utils.ts": "fc59674548a4dd9f5c3cc4f99f9c264aa521a52c1a4ff56b0263713e57e79206",
+    "https://jsr.io/@std/collections/0.216.0/intersect.ts": "58d8ae4602f119e465a3084cc982f1b91ea7cb864d519fe9b86f3ca6872f6962",
     "https://jsr.io/@std/fmt/0.215.0/colors.ts": "59b5de7c07cdc0322ed61b2d98da1ca4fbc9f576d45c2beee577a27556e52d63",
     "https://jsr.io/@std/fs/0.215.0/_get_file_info_type.ts": "da7bec18a7661dba360a1db475b826b18977582ce6fc9b25f3d4ee0403fe8cbd",
     "https://jsr.io/@std/fs/0.215.0/_to_path_string.ts": "037a0c6dd97c22c5711aee18cf18a425a3969b48025be173653de0e529d92420",

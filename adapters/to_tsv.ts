@@ -3,7 +3,7 @@ import toObj from './to_obj.ts'
 
 export default function toTSV(deck: Deck): string {
   const obj = toObj(deck)
-  let tsv = obj.columns.join('\t') + '\n'
+  let tsv = obj.content.fields.join('\t') + '\n'
 
   obj.notes.forEach((row: string[]) => {
     tsv += row.map(format).join('\t') + '\n'

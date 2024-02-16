@@ -16,9 +16,9 @@ const templateB = new Template(
 )
 
 Deno.test('write deck to APKG', async () => {
-  const deck = fromJSON(JSON.stringify(deckData))
+  const deck = fromJSON(JSON.stringify(deckData), { sortField: 'emoji' })
 
-  deck.notes.forEach((note) => {
+  Object.values(deck.notes).forEach((note) => {
     note.templates.push(templateA)
     note.templates.push(templateB)
   })
@@ -33,5 +33,8 @@ Deno.test('write deck to APKG', async () => {
     media.push({ name: file.name, data: blob })
   }
 
-  await Deno.writeFile('./my-deck.apkg', await toAPKG(deck, media))
+  await Deno.writeFile(
+    './my-deck.apkg',
+    await toAPKG(deck, { sortField: 'emoji', media }),
+  )
 })

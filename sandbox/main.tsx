@@ -12,7 +12,7 @@ const app = new Hono()
 
 const deck = fromObj(data)
 const template = new Template('basic', '{{emoji}}', '{{text}}')
-deck.notes.forEach((note) => {
+Object.values(deck.notes).forEach((note) => {
   note.templates.push(template)
 })
 

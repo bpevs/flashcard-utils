@@ -10,15 +10,15 @@ import deckData from './__data__/zh_CN.ts'
  * @reference https://docs.ankiweb.net/importing/text-files.html#file-headers
  */
 Deno.test('init Deck to/from TSV', async (t) => {
-  const deck = fromObj(deckData)
+  const deck = fromObj(deckData, { sortField: 'emoji' })
   const tsvResult = toTSV(deck)
   await assertSnapshot(t, tsvResult)
   const tsvDeck = fromTSV(tsvResult, {
+    sortField: 'emoji',
     meta: {
       id: deck.id,
       name: deck.name,
       desc: deck.desc,
-      key: deck.key,
       meta: deck.meta,
     },
   })
