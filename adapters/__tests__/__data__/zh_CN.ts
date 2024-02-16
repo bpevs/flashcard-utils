@@ -14,7 +14,7 @@ export default Object.freeze({
   },
   content: {
     fields: ['category', 'emoji', 'text', 'pinyin', 'sound'],
-    watch: [],
+    watch: ['emoji', 'text', 'pinyin'],
   },
   notes: [
     ['animal', '🐈', '猫', 'māo', '[sound:zh-cn_猫.mp3]'],
