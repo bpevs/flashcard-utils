@@ -1,6 +1,5 @@
 import Card, { Scheduling } from './card.ts'
 import Note from './note.ts'
-import Template from './template.ts'
 import type { Meta } from './types.ts'
 import sm2 from '../schedulers/sm2.ts'
 
@@ -20,7 +19,6 @@ export default class Deck {
   key: string // Unique key of each Note. Used to create Note id
   notes: Note[]
   scheduler: Scheduler
-  templates: Template[]
   meta?: { [key: string]: string | number }
 
   constructor({ id, name, desc, key, meta, scheduler }: {
@@ -38,8 +36,11 @@ export default class Deck {
     this.notes = []
     this.key = key
     this.scheduler = scheduler || sm2
-    this.templates = []
     if (meta) this.meta = meta
+  }
+
+  get templates() {
+    return this.notes[0].templates || []
   }
 
   get cards() {

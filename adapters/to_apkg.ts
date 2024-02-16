@@ -7,14 +7,11 @@ import JSZip from 'npm:jszip'
 
 import toObj from './to_obj.ts'
 import Deck from '../models/deck.ts'
-import Template from '../models/template.ts'
 
-export default function toAPKG(deck: Deck): Promise<Uint8Array> {
-  deck.templates = [
-    new Template('basic', '{{emoji}}', '{{text}}'),
-    new Template('basic', '{{text}}', '{{emoji}}'),
-  ]
-  return writeToArray(deck)
+type Media = Array<{ name: string; data: Blob }>
+
+export default function toAPKG(deck: Deck, media?: Media): Promise<Uint8Array> {
+  return writeToArray(deck, media)
 }
 
 /**
@@ -103,13 +100,12 @@ const defaultDeck: DeckProps = {
   extendRev: 50,
 }
 
-export async function writeToArray(deck: Deck) {
+export async function writeToArray(deck: Deck, media: Media = []) {
   const obj = toObj(deck)
   const mainFieldIndex = obj.columns.indexOf(deck.key)
   const fieldNames = obj.columns.map((name) => ({ name }))
   fieldNames.unshift(fieldNames.splice(mainFieldIndex, 1)[0])
 
-  const media: Array<{ name: string; data: Blob }> = []
   const decksArr: Array<{
     id: number
     name: string

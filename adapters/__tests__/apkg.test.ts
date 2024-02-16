@@ -6,13 +6,13 @@ import deckData from './__data__/zh_CN.ts'
 const templateA = new Template(
   'reading',
   '<h1>{{emoji}}</h1>',
-  '{{FrontSide}}\n{{text}}',
+  '{{FrontSide}}\n{{text}}{{sound}}',
 )
 
 const templateB = new Template(
   'speaking',
   '<h1>{{Text}}</h1>',
-  '{{FrontSide}}\n{{emoji}}',
+  '{{FrontSide}}\n{{emoji}}{{sound}}',
 )
 
 Deno.test('write deck to APKG', async () => {
@@ -23,5 +23,15 @@ Deno.test('write deck to APKG', async () => {
     note.templates.push(templateB)
   })
 
-  await Deno.writeFile('./my-deck.apkg', await toAPKG(deck))
+  const media = []
+  const path = './adapters/__tests__/__data__/audio'
+  for await (
+    const file of Deno.readDir(path)
+  ) {
+    const bytes = await Deno.readFile(path + '/' + file.name)
+    const blob = new Blob([bytes], { type: 'audio/mpeg' })
+    media.push({ name: file.name, data: blob })
+  }
+
+  await Deno.writeFile('./my-deck.apkg', await toAPKG(deck, media))
 })
