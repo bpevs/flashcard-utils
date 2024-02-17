@@ -22,33 +22,63 @@ app.get('/', (c) => {
   return c.html(
     <html>
       <head>
-        <style>{`a { padding: 10px; }`}</style>
+        <style>
+          {`
+          a { padding: 10px; }
+          .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+          }
+          .hidden {
+            display: none;
+          }
+        `}
+        </style>
       </head>
       <body>
-        <flash-card
-          id='flashcard'
-          question={card ? card.renderQuestion() : 'No Cards Left'}
-          answer={card ? card.renderAnswer() : ''}
-        />
-        {!card ? '' : (
-          <div>
-            <a href='/answer/0'>hard</a>
-            <a href='/answer/3'>normal</a>
-            <a href='/answer/5'>easy</a>
-          </div>
-        )}
+        <div class='container'>
+          <flash-card
+            id='flashcard'
+            question={card ? card.renderQuestion() : 'No Cards Left'}
+            answer={card ? card.renderAnswer() : ''}
+          />
+          {!card ? '' : (
+            <div>
+              <div id='answers' class='hidden'>
+                <a href='/answer/0'>0</a>
+                <a href='/answer/1'>1</a>
+                <a href='/answer/2'>2</a>
+                <a href='/answer/3'>3</a>
+                <a href='/answer/4'>4</a>
+                <a href='/answer/5'>5</a>
+              </div>
+              <button id='flip-button'>flip</button>
+            </div>
+          )}
+        </div>
 
         <script type='module'>
           {html`
           import { Flashcard } from '/mod.js'
           customElements.define("flash-card", Flashcard);
 
-          let showCard = false
+          let isFlipped = false
           const cardEl = document.getElementById('flashcard')
-          cardEl.onclick = () => {
-            showCard = !showCard
-            cardEl.setAttribute('show', showCard)
+          const answersEl = document.getElementById('answers')
+          const flipButtonEl = document.getElementById('flip-button')
+
+          const flip = () => {
+            isFlipped = !isFlipped
+            cardEl.setAttribute('flipped', isFlipped)
+            answersEl.className = ''
+            flipButtonEl.className = 'hidden'
           }
+          cardEl.onclick = flip
+          if (flipButtonEl) flipButtonEl.onclick = flip
         `}
         </script>
       </body>
