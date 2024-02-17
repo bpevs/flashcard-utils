@@ -1,6 +1,6 @@
-import type { Meta } from '../models/types.ts'
 import Deck from '../models/deck.ts'
-import fromObj from './from_obj.ts'
+import type { Meta } from '../models/types.ts'
+import fromOBJ from './from_obj.ts'
 
 export default function fromTSV(
   tsv: string,
@@ -16,7 +16,7 @@ export default function fromTSV(
 ): Deck {
   const [fieldRow, ...noteRows] = tsv.split('\n')
   const fields = fieldRow.split('\t')
-  return fromObj({
+  return fromOBJ({
     ...options.meta,
     content: { fields },
     notes: noteRows

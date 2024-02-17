@@ -1,8 +1,8 @@
-import type { ExportObj } from '../models/types.ts'
 import Deck from '../models/deck.ts'
 import Note from '../models/note.ts'
+import type { ExportObj } from './types.ts'
 
-export default function toObj(deck: Deck): ExportObj {
+export default function toOBJ(deck: Deck): ExportObj {
   const fields = deck.content.fields
 
   const data: ExportObj = {

@@ -3,14 +3,15 @@ import { Hono } from 'npm:hono'
 import { jsx } from 'npm:hono/jsx'
 import { html } from 'npm:hono/html'
 import { serveStatic } from 'npm:@hono/node-server/serve-static'
+import build from '../build.ts'
 
 import data from './__data__/zh_CN.ts'
-import fromObj from '../adapters/from_obj.ts'
+import fromOBJ from '../adapters/from_obj.ts'
 import Template from '../models/template.ts'
 
 const app = new Hono()
 
-const deck = fromObj(data, { sortField: 'emoji' })
+const deck = fromOBJ(data, { sortField: 'emoji' })
 const template = new Template('basic', '{{emoji}}', '{{text}}')
 Object.values(deck.notes).forEach((note) => {
   note.templates.push(template)
@@ -39,7 +40,7 @@ app.get('/', (c) => {
 
         <script type='module'>
           {html`
-          import Flashcard from './components/flashcard.js'
+          import { Flashcard } from '/mod.js'
           customElements.define("flash-card", Flashcard);
 
           let showCard = false
@@ -59,6 +60,14 @@ app.get('/answer/:quality', (c) => {
   const quality = Number(c.req.param('quality'))
   deck.answerCurrent(quality)
   return c.redirect('/')
+})
+
+// The only reason this exists is to re-build this library for development
+// You do not need this build script for your app if you do a normal import
+app.get('/mod.js', async (c) => {
+  c.header('Content-Type', 'application/javascript')
+  const [baseJS, _adaptersJS] = await build()
+  return c.body(baseJS.text)
 })
 
 app.use('/*', serveStatic({ root: './' }))

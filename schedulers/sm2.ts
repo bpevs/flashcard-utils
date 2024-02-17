@@ -3,7 +3,6 @@
  * @reference https://www.supermemo.com/en/blog/application-of-a-computer-to-improve-the-results-obtained-in-working-with-the-supermemo-method
  * @reference https://super-memory.com/english/ol/sm2.htm
  */
-
 import Card, { Scheduling } from '../models/card.ts'
 
 const EF = 2.5

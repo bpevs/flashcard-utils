@@ -34,7 +34,7 @@ Deno.test('write deck to APKG', async () => {
   }
 
   await Deno.writeFile(
-    './my-deck.apkg',
+    './test.apkg',
     await toAPKG(deck, { sortField: 'emoji', media }),
   )
 })

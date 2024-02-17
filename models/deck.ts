@@ -1,8 +1,8 @@
 import { intersect } from 'jsr:@std/collections/intersect'
+import sm2 from '../schedulers/sm2.ts'
 import Card from './card.ts'
 import Note from './note.ts'
 import type { Meta } from './types.ts'
-import sm2 from '../schedulers/sm2.ts'
 
 interface Scheduler {
   init(card: Card): Card

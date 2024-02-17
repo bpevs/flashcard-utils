@@ -1,4 +1,8 @@
 export default class Flashcard extends HTMLElement {
+  answerEl: HTMLDivElement
+  cardEl: HTMLDivElement
+  questionEl: HTMLDivElement
+
   static observedAttributes = [
     'question',
     'answer',
@@ -7,6 +11,9 @@ export default class Flashcard extends HTMLElement {
 
   constructor() {
     super()
+    this.cardEl = document.createElement('div')
+    this.questionEl = document.createElement('div')
+    this.answerEl = document.createElement('div')
   }
 
   connectedCallback() {
@@ -27,27 +34,24 @@ export default class Flashcard extends HTMLElement {
         opacity: 0;
       }
     `
-    this.cardEl = document.createElement('div')
+
+    const showAnswer = this.getAttribute('show') == 'true'
+
     this.cardEl.className = 'card'
-
-    this.questionEl = document.createElement('div')
     this.questionEl.className = 'question'
-    this.questionEl.innerHTML = this.getAttribute('question')
-    this.cardEl.appendChild(this.questionEl)
+    this.answerEl.className = showAnswer ? 'answer' : 'answer hidden'
 
-    this.answerEl = document.createElement('div')
-    console.log(this.getAttribute('show'))
-    this.answerEl.innerHTML = this.getAttribute('answer')
-    this.answerEl.className = this.getAttribute('show') == 'true'
-      ? 'answer'
-      : 'answer hidden'
+    this.answerEl.innerHTML = this.getAttribute('answer') || ''
+    this.questionEl.innerHTML = this.getAttribute('question') || ''
+
+    this.cardEl.appendChild(this.questionEl)
     this.cardEl.appendChild(this.answerEl)
 
     shadow.appendChild(style)
     shadow.appendChild(this.cardEl)
   }
 
-  attributeChangedCallback(name, _oldValue, newValue) {
+  attributeChangedCallback(name: string, _oldValue: string, newValue: string) {
     if (this.answerEl && (name === 'answer')) {
       this.answerEl.innerHTML = newValue
     } else if (this.questionEl && (name === 'question')) {

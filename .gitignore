@@ -1,2 +1,6 @@
 .DS_Store
-my-deck.apkg
+
+# Build Artifacts
+test.apkg
+mod.js
+adapters/mod.js

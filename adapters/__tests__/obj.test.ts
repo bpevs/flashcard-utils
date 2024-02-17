@@ -1,11 +1,11 @@
 import { assertEquals } from 'jsr:@std/assert'
-import fromObj from '../from_obj.ts'
-import toObj from '../to_obj.ts'
+import fromOBJ from '../from_obj.ts'
+import toOBJ from '../to_obj.ts'
 import deckData from './__data__/zh_CN.ts'
 
 Deno.test('init Deck to/from obj', () => {
-  const deck = fromObj(deckData, { sortField: 'emoji' })
-  assertEquals(toObj(deck), deckData)
+  const deck = fromOBJ(deckData, { sortField: 'emoji' })
+  assertEquals(toOBJ(deck), deckData)
 })
 
 Deno.test('Should sort notes in order of column', () => {
@@ -28,6 +28,6 @@ Deno.test('Should sort notes in order of column', () => {
   }
 
   // Expect to equal original deckData
-  const deck = fromObj(data, { sortField: 'emoji' })
-  assertEquals(toObj(deck), deckData)
+  const deck = fromOBJ(data, { sortField: 'emoji' })
+  assertEquals(toOBJ(deck), deckData)
 })

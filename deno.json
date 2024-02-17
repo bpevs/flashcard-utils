@@ -1,12 +1,19 @@
 {
+  "compilerOptions": {
+    "lib": ["esnext", "dom", "deno.window", "dom"]
+  },
   "fmt": {
     "proseWrap": "never",
     "singleQuote": true,
     "semiColons": false
   },
+  "lint": {
+    "exclude": ["mod.js", "adapters/mod.js"]
+  },
   "tasks": {
-    "test": "deno fmt && deno lint && deno test -A",
+    "build": "deno run --allow-read --allow-write --allow-env --allow-run ./build.ts",
+    "test": "deno fmt && deno lint && deno check mod.ts && deno check adapters/mod.ts && deno test -A",
     "test:update": "deno test -A -- --update",
-    "dev": "deno run --allow-read --allow-write --allow-net --watch examples/main.tsx"
+    "dev": "deno run -A --watch examples/main.tsx"
   }
 }

@@ -1,9 +1,8 @@
-import type { ExportObj } from '../models/types.ts'
 import Deck from '../models/deck.ts'
 import Note, { Content } from '../models/note.ts'
-import sortByColumns from '../utils/sort_by_columns.ts'
+import type { ExportObj } from './types.ts'
 
-export default function fromObj(
+export default function fromOBJ(
   obj: ExportObj,
   { sortField }: { sortField?: string } = {},
 ): Deck {
@@ -21,7 +20,7 @@ export default function fromObj(
     notes: {},
   })
 
-  notes.toSorted(sortByColumns).forEach((row: string[]) => {
+  notes.toSorted(sortByField).forEach((row: string[]) => {
     const content: Content = {}
 
     row.forEach((value, i) => {
@@ -37,4 +36,13 @@ export default function fromObj(
   })
 
   return deck
+}
+
+// Sort by row values starting from index 0; aka put category first
+function sortByField(a: string[], b: string[]) {
+  for (let i = 0; i < a.length; i++) {
+    const comp = a[i].localeCompare(b[i])
+    if (comp) return comp
+  }
+  return 0
 }

@@ -1,8 +1,8 @@
 import Deck from '../models/deck.ts'
-import toObj from './to_obj.ts'
+import toOBJ from './to_obj.ts'
 
 export default function toTSV(deck: Deck): string {
-  const obj = toObj(deck)
+  const obj = toOBJ(deck)
   let tsv = obj.content.fields.join('\t') + '\n'
 
   obj.notes.forEach((row: string[]) => {

@@ -1,7 +1,7 @@
 import stringify from 'npm:json-stringify-pretty-compact'
 import Deck from '../models/deck.ts'
-import toObj from './to_obj.ts'
+import toOBJ from './to_obj.ts'
 
 export default function toJSON(deck: Deck): string {
-  return stringify(toObj(deck))
+  return stringify(toOBJ(deck))
 }
