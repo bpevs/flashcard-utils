@@ -10,6 +10,8 @@ const EF = 2.5
 const REPETITION = 0
 const INTERVAL = 0
 
+export default { init, filter, sort, update }
+
 export interface sm2Scheduling extends Scheduling {
   interval: number
   repetition: number
@@ -25,58 +27,66 @@ export function init(card: Card): Card {
 }
 
 export function filter(card: Card): boolean {
-  const due = getDue(card)
+  const due = getDueDate(card)
   return !due || (due <= new Date())
 }
 
-function getDue(card: Card): Date | null {
+export function sort(cardA: Card, cardB: Card) {
+  init(cardA)
+  init(cardB)
+  const aDue = getDueDate(cardA)
+  const bDue = getDueDate(cardB)
+  if (!aDue && bDue) return -1
+  if (!bDue && aDue) return 1
+  if (!aDue || !bDue) return (Math.random() - 0.5)
+  if (sameDay(aDue, bDue)) return (Math.random() - 0.5)
+  return (aDue.getDate() - bDue.getDate())
+}
+
+export function update(card: Card, quality: 0 | 1 | 2 | 3 | 4 | 5): Card {
+  const {
+    efactor: prevEfactor = EF,
+    repetition: prevRepetition = REPETITION,
+    interval: prevInterval = INTERVAL,
+    lastStudied: prevLastStudied,
+  } = card.scheduling
+  const efactorModifier = 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)
+  const efactor = Math.max(1.3, prevEfactor + efactorModifier)
+  const lastStudied = new Date()
+
+  if (quality < 4) {
+    const studiedToday = sameDay(prevLastStudied || lastStudied, lastStudied)
+    card.scheduling = {
+      efactor: (quality < 3) ? prevEfactor : efactor,
+      lastStudied,
+      interval: studiedToday ? 0 : Math.min(1, prevInterval),
+      repetition: 0,
+    }
+  } else if (prevRepetition === 0) {
+    card.scheduling = { efactor, lastStudied, interval: 1, repetition: 1 }
+  } else if (prevRepetition === 1) {
+    card.scheduling = { efactor, lastStudied, interval: 6, repetition: 2 }
+  } else {
+    card.scheduling = {
+      efactor,
+      lastStudied,
+      interval: Math.round(prevInterval * prevEfactor),
+      repetition: prevRepetition + 1,
+    }
+  }
+
+  return card
+}
+
+function getDueDate(card: Card): Date | null {
   if (!card.scheduling.lastStudied) return null
   const due = new Date(card.scheduling.lastStudied)
   due.setDate(due.getDate() + (card.scheduling.interval ?? INTERVAL))
   return due
 }
 
-export function sort(cardA: Card, cardB: Card) {
-  init(cardA)
-  init(cardB)
-  const a = cardA.scheduling
-  const b = cardB.scheduling
-  const aDue = getDue(cardA)
-  const bDue = getDue(cardB)
-  if (!aDue && bDue) return -1
-  if (!bDue && aDue) return 1
-
-  return (aDue && bDue && (aDue.getDate() - bDue.getDate())) ||
-    ((a.interval ?? INTERVAL) - (b.interval ?? INTERVAL)) ||
-    ((a.repetition ?? REPETITION) - (b.repetition ?? REPETITION)) ||
-    ((a.efactor ?? EF) - (b.efactor ?? EF)) ||
-    0
+function sameDay(d1: Date, d2: Date): boolean {
+  return d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
 }
-
-export function update(
-  prev: Scheduling,
-  q: 0 | 1 | 2 | 3 | 4 | 5,
-): sm2Scheduling {
-  const { efactor: prevEfactor = EF, repetition = REPETITION } = prev
-  const lastStudied = new Date()
-
-  if (q < 4) {
-    return { efactor: prevEfactor, lastStudied, interval: 1, repetition: 0 }
-  }
-
-  const efactorModifier = 0.1 - (5 - q) * (0.08 + (5 - q) * 0.02)
-  const efactor = Math.max(1.3, prevEfactor + efactorModifier)
-
-  if (repetition === 0) {
-    return { efactor, lastStudied, interval: 1, repetition: 1 }
-  }
-
-  if (repetition === 1) {
-    return { efactor, lastStudied, interval: 6, repetition: 2 }
-  }
-
-  const interval = Math.round((prev.interval ?? INTERVAL) * prevEfactor)
-  return { efactor, lastStudied, interval, repetition: repetition + 1 }
-}
-
-export default { init, filter, sort, update }

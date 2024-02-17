@@ -9,6 +9,12 @@ export interface Scheduling {
   lastStudied?: Date
 }
 
+const basicTemplate = new Template(
+  'basic',
+  '{{question}}',
+  '{{answer}}',
+)
+
 // A visual representation of a Note. A card contains no actual data.
 // Instead, it contains:
 //   1. A template, showing how to display a Note's data
@@ -22,7 +28,7 @@ export default class Card {
   constructor(
     id: string,
     note: Note,
-    template: Template,
+    template: Template = basicTemplate,
     scheduling: Scheduling = {},
   ) {
     this.id = id
@@ -40,7 +46,6 @@ export default class Card {
   }
 
   answer(deck: Deck, quality: 0 | 1 | 2 | 3 | 4 | 5) {
-    this.scheduling = deck.scheduler.update(this.scheduling, quality)
-    return this
+    return deck.scheduler.update(this, quality)
   }
 }

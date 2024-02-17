@@ -4,7 +4,9 @@
     "specifiers": {
       "jsr:@std/assert": "jsr:@std/assert@0.215.0",
       "jsr:@std/assert@^0.215.0": "jsr:@std/assert@0.215.0",
+      "jsr:@std/async@^0.215.0": "jsr:@std/async@0.215.0",
       "jsr:@std/collections": "jsr:@std/collections@0.216.0",
+      "jsr:@std/data-structures@^0.215.0": "jsr:@std/data-structures@0.215.0",
       "jsr:@std/fmt@^0.215.0": "jsr:@std/fmt@0.215.0",
       "jsr:@std/fs@^0.215.0": "jsr:@std/fs@0.215.0",
       "jsr:@std/path@^0.215.0": "jsr:@std/path@0.215.0",
@@ -30,6 +32,8 @@
       "@std/testing@0.215.0": {
         "dependencies": [
           "jsr:@std/assert@^0.215.0",
+          "jsr:@std/async@^0.215.0",
+          "jsr:@std/data-structures@^0.215.0",
           "jsr:@std/fmt@^0.215.0",
           "jsr:@std/fs@^0.215.0",
           "jsr:@std/path@^0.215.0"
@@ -263,8 +267,14 @@
     "https://jsr.io/@std/assert/0.215.0/mod.ts": "325df8c0683ad83a873b9691aa66b812d6275fc9fec0b2d180ac68a2c5efed3b",
     "https://jsr.io/@std/assert/0.215.0/unimplemented.ts": "ed3115f6fb271277e0522f3b18f020259900c385e3fa986f109a519a1cf25763",
     "https://jsr.io/@std/assert/0.215.0/unreachable.ts": "1e748f69f73c57f4de9ba1dba39306b86e0ad2c0915975608519a2bcf42c262f",
+    "https://jsr.io/@std/async/0.215.0/delay.ts": "1492f2f9e2b03862e5f4b3aab78160c75b1e0023404d200d7151ae837d218723",
     "https://jsr.io/@std/collections/0.216.0/_utils.ts": "fc59674548a4dd9f5c3cc4f99f9c264aa521a52c1a4ff56b0263713e57e79206",
     "https://jsr.io/@std/collections/0.216.0/intersect.ts": "58d8ae4602f119e465a3084cc982f1b91ea7cb864d519fe9b86f3ca6872f6962",
+    "https://jsr.io/@std/data-structures/0.215.0/_binary_search_node.ts": "ce1da11601fef0638df4d1e53c377f791f96913383277389286b390685d76c07",
+    "https://jsr.io/@std/data-structures/0.215.0/_red_black_node.ts": "c35830a4c60d04fad80e54e991ca6570bbe00a0a7a78d37450efc396fa51eaaf",
+    "https://jsr.io/@std/data-structures/0.215.0/binary_search_tree.ts": "cc89e4b653c47f1763b9d5d44da9e21a9783b7dd6b5e50099eab38d67fa1257b",
+    "https://jsr.io/@std/data-structures/0.215.0/comparators.ts": "74e64752f005f03614d9bd4912ea64c58d2e663b5d8c9dba6e2e2997260f51eb",
+    "https://jsr.io/@std/data-structures/0.215.0/red_black_tree.ts": "6bbf20916e79a7b09bce20f635cf4e63fda4c3271dade38bad9211db40910b27",
     "https://jsr.io/@std/fmt/0.215.0/colors.ts": "59b5de7c07cdc0322ed61b2d98da1ca4fbc9f576d45c2beee577a27556e52d63",
     "https://jsr.io/@std/fs/0.215.0/_get_file_info_type.ts": "da7bec18a7661dba360a1db475b826b18977582ce6fc9b25f3d4ee0403fe8cbd",
     "https://jsr.io/@std/fs/0.215.0/_to_path_string.ts": "037a0c6dd97c22c5711aee18cf18a425a3969b48025be173653de0e529d92420",
@@ -298,6 +308,8 @@
     "https://jsr.io/@std/path/0.215.0/windows/parse.ts": "c63488c9d581576f955eaa8c4ab09c165b8d922ec3911b302c31331c8303973f",
     "https://jsr.io/@std/path/0.215.0/windows/resolve.ts": "671e70d150bd933832ffcf02e97572fdfbb8ed199082bdabdf4e92d3e898636e",
     "https://jsr.io/@std/path/0.215.0/windows/to_file_url.ts": "cdead9ba8f1e4062c3c45a7c9fa6384e209b734526b4c6ab36ce2f17339367f5",
-    "https://jsr.io/@std/testing/0.215.0/snapshot.ts": "65ced0dbc91c20ef8a5e2e2c71c7aea30cce9500f56ca1060c14fc067413873e"
+    "https://jsr.io/@std/testing/0.215.0/_time.ts": "fefd1ff35b50a410db9b0e7227e05163e1b172c88afd0d2071df0125958c3ff3",
+    "https://jsr.io/@std/testing/0.215.0/snapshot.ts": "65ced0dbc91c20ef8a5e2e2c71c7aea30cce9500f56ca1060c14fc067413873e",
+    "https://jsr.io/@std/testing/0.215.0/time.ts": "ae51cb623e99e4b61fe6178e172b1acf36632fca549e061f2f2ece87836aac92"
   }
 }

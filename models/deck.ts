@@ -1,5 +1,5 @@
 import { intersect } from 'jsr:@std/collections/intersect'
-import Card, { Scheduling } from './card.ts'
+import Card from './card.ts'
 import Note from './note.ts'
 import type { Meta } from './types.ts'
 import sm2 from '../schedulers/sm2.ts'
@@ -8,7 +8,7 @@ interface Scheduler {
   init(card: Card): Card
   filter(card: Card): boolean
   sort(cardA: Card, cardB: Card): number
-  update(scheduling: Scheduling, quality: number): Scheduling
+  update(card: Card, quality: number): Card
 }
 
 interface ContentInfo {
