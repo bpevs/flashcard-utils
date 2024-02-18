@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <!-- THIS IMPORT MAP IS UNNECESSARY FOR NORMAL USE -->
+    <script type="importmap">
+      {
+        "imports": {
+          "flashcards": "/flashcards/mod.js",
+          "flashcards/adapters": "/flashcards/adapters/mod.js"
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="/index.css">
+  </head>
+  <body>
+    <div id='container'>
+      <flash-card id='flashcard'></flash-card>
+      <div id='buttons'>
+        <button id="incorrect">❌</button>
+        <button id="correct">✅</button>
+      </div>
+    </div>
+    <script type='module' src='./index.js'></script>
+  </body>
+</html>

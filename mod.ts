@@ -8,4 +8,4 @@ export * from './models/types.ts'
 import * as basic from './schedulers/basic.ts'
 import * as sm2 from './schedulers/sm2.ts'
 
-export const scheduler = { basic, sm2 }
+export const schedulers = { basic, sm2 }

@@ -2,6 +2,7 @@ import { intersect } from 'jsr:@std/collections/intersect'
 import sm2 from '../schedulers/sm2.ts'
 import Card from './card.ts'
 import Note from './note.ts'
+import Template from './template.ts'
 import type { Meta, S } from './types.ts'
 
 interface Scheduler {
@@ -86,6 +87,11 @@ export default class Deck {
       throw new Error(`mismatched number of fields, ${this.content.fields}`)
     }
     this.notes[note.id] = note
+  }
+
+  addTemplate(template: Template) {
+    Object.values(this.notes)
+      .forEach((note) => note.templates.push(template))
   }
 }
 

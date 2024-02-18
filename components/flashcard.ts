@@ -1,8 +1,8 @@
 export default class Flashcard extends HTMLElement {
   cardEl: HTMLDivElement
   cardContentEl: HTMLDivElement
-  answerEl: HTMLElement
-  questionEl: HTMLElement
+  answerEl: HTMLDivElement
+  questionEl: HTMLDivElement
 
   static observedAttributes = [
     'question',
@@ -14,8 +14,8 @@ export default class Flashcard extends HTMLElement {
     super()
     this.cardEl = document.createElement('div')
     this.cardContentEl = document.createElement('div')
-    this.answerEl = document.createElement('h1')
-    this.questionEl = document.createElement('h1')
+    this.answerEl = document.createElement('div')
+    this.questionEl = document.createElement('div')
   }
 
   connectedCallback() {
@@ -25,10 +25,6 @@ export default class Flashcard extends HTMLElement {
     style.textContent = `
       .card {
         overflow: hidden;
-        width: 200px;
-        height: 200px;
-        margin: 20px;
-        display: inline-block;
         cursor: pointer;
         user-select: none;
         perspective: 1000;

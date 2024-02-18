@@ -12,7 +12,7 @@ const options = {
   bundle: true,
   entryPoints: [
     { out: './mod', in: './mod.ts' },
-    { out: 'adapters/mod', in: 'adapters/mod.ts' },
+    { out: 'adapters/mod', in: './adapters/mod.ts' },
   ],
   format: 'esm',
   outdir: './',
@@ -23,8 +23,35 @@ const options = {
 await esbuild.build(options)
 esbuild.stop()
 
-export default async function build() {
-  const result = await esbuild.build({ ...options, write: false })
+export const build = debounce(async function () {
+  const result = await esbuild.build({
+    ...options,
+    write: false,
+  })
   await esbuild.stop()
   return result.outputFiles
+}, 100)
+
+// deno-lint-ignore no-explicit-any
+function debounce(func: (...args: any[]) => any, wait: number) {
+  // deno-lint-ignore no-explicit-any
+  const resolves: any[] = []
+  let timer: number
+
+  // deno-lint-ignore no-explicit-any
+  return function debounced(...args: any[]) {
+    return new Promise((resolve) => {
+      resolves.push(resolve)
+      const later = () => {
+        globalThis.clearTimeout(timer)
+        const result = func.apply(this, args)
+        while (resolves.length) {
+          resolves.shift()(result)
+        }
+      }
+
+      globalThis.clearTimeout(timer)
+      timer = globalThis.setTimeout(later, wait)
+    })
+  }
 }
