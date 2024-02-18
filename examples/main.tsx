@@ -8,12 +8,15 @@ import build from '../build.ts'
 import data from './__data__/zh_CN.ts'
 import fromOBJ from '../adapters/from_obj.ts'
 import Template from '../models/template.ts'
+import BasicScheduler from '../schedulers/basic.ts'
 
 const app = new Hono()
 
 const deck = fromOBJ(data, { sortField: 'emoji' })
+deck.scheduler = BasicScheduler
 const template = new Template('basic', '{{emoji}}', '{{text}}')
-Object.values(deck.notes).forEach((note) => {
+const notes = Object.values(deck.notes)
+notes.forEach((note) => {
   note.templates.push(template)
 })
 
@@ -49,12 +52,8 @@ app.get('/', (c) => {
           {!card ? '' : (
             <div>
               <div id='answers' class='hidden'>
-                <a href='/answer/0'>0</a>
-                <a href='/answer/1'>1</a>
-                <a href='/answer/2'>2</a>
-                <a href='/answer/3'>3</a>
-                <a href='/answer/4'>4</a>
-                <a href='/answer/5'>5</a>
+                <a href='/answer/0'>incorrect</a>
+                <a href='/answer/1'>correct</a>
               </div>
               <button id='flip-button'>flip</button>
             </div>

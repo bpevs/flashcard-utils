@@ -11,13 +11,13 @@ export const name = 'sm2'
 export default { name, init, filter, sort, update }
 
 export interface S {
-  interval?: number
-  repetition?: number
-  efactor?: number
+  interval: number
+  repetition: number
+  efactor: number
   lastStudied?: Date
 }
 
-export function init({ efactor, repetition, interval }: S = {}): S {
+export function init({ efactor, repetition, interval }: Partial<S> = {}): S {
   return {
     efactor: efactor ?? EF,
     repetition: repetition ?? REPETITION,
@@ -25,12 +25,12 @@ export function init({ efactor, repetition, interval }: S = {}): S {
   }
 }
 
-export function filter(s: S = {}): boolean {
+export function filter(s: S): boolean {
   const due = getDueDate(s)
   return !due || (due <= new Date())
 }
 
-export function sort(sA: S = {}, sB: S = {}) {
+export function sort(sA: S, sB: S): number {
   init(sA)
   init(sB)
   const aDue = getDueDate(sA)
@@ -47,7 +47,7 @@ export function update({
   repetition: prevRepetition = REPETITION,
   interval: prevInterval = INTERVAL,
   lastStudied: prevLastStudied,
-}: S = {}, quality: 0 | 1 | 2 | 3 | 4 | 5): S {
+}: S, quality: 0 | 1 | 2 | 3 | 4 | 5): S {
   const efactorModifier = 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)
   const efactor = Math.max(1.3, prevEfactor + efactorModifier)
   const lastStudied = new Date()

@@ -6,7 +6,7 @@ const ms = 1500000000000
 const oneDayMS = 86_400_000
 
 Deno.test('init', () => {
-  const s: S = {}
+  const s: S = init({})
   assertEquals(
     init(s),
     { efactor: 2.5, repetition: 0, interval: 0 },
@@ -24,7 +24,7 @@ Deno.test('init', () => {
 
 Deno.test('filter', () => {
   const time = new FakeTime(ms)
-  let s: S = {}
+  let s: S = init({})
 
   try {
     assert(filter(s), 'true by default')
@@ -50,8 +50,8 @@ Deno.test('filter', () => {
 })
 
 Deno.test('sort', () => {
-  let sA = {}
-  let sB = {}
+  let sA = init({})
+  let sB = init({})
   sA = update(sA, 4) // int = 1
   sB = update(sB, 4) // int = 1
 
@@ -67,7 +67,7 @@ Deno.test('sort', () => {
 Deno.test('update', () => {
   const time = new FakeTime(ms)
   const lastStudied = new Date(ms)
-  let s: S = {}
+  let s: S = init({})
 
   try {
     s = update(s, 5)

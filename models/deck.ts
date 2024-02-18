@@ -55,20 +55,22 @@ export default class Deck {
   }
 
   get cards() {
+    const { init, sort, name } = this.scheduler
     return Object.values(this.notes)
       .map((note) => note.cards)
       .flat()
-      .sort((cardA: Card, cardB: Card) =>
-        this.scheduler.sort(
-          cardA.scheduling[this.scheduler.name],
-          cardB.scheduling[this.scheduler.name],
+      .toSorted((cardA: Card, cardB: Card) =>
+        sort(
+          init(cardA.scheduling[name]),
+          init(cardB.scheduling[name]),
         )
       )
   }
 
   getCurrent() {
+    const { init, filter, name } = this.scheduler
     return this.cards.filter((card: Card) => {
-      return this.scheduler.filter(card.scheduling[this.scheduler.name])
+      return filter(init(card.scheduling[name]))
     })[0]
   }
 
