@@ -2,13 +2,14 @@ import { intersect } from 'jsr:@std/collections/intersect'
 import sm2 from '../schedulers/sm2.ts'
 import Card from './card.ts'
 import Note from './note.ts'
-import type { Meta } from './types.ts'
+import type { Meta, S } from './types.ts'
 
 interface Scheduler {
-  init(card: Card): Card
-  filter(card: Card): boolean
-  sort(cardA: Card, cardB: Card): number
-  update(card: Card, quality: number): Card
+  name: string
+  init(s: S): S
+  filter(s: S): boolean
+  sort(sA: S, sB: S): number
+  update(s: S, quality: number): S
 }
 
 interface ContentInfo {
@@ -56,11 +57,19 @@ export default class Deck {
   get cards() {
     return Object.values(this.notes)
       .map((note) => note.cards)
-      .flat().sort(this.scheduler.sort)
+      .flat()
+      .sort((cardA: Card, cardB: Card) =>
+        this.scheduler.sort(
+          cardA.scheduling[this.scheduler.name],
+          cardB.scheduling[this.scheduler.name],
+        )
+      )
   }
 
   getCurrent() {
-    return this.cards.filter(this.scheduler.filter)[0]
+    return this.cards.filter((card: Card) => {
+      return this.scheduler.filter(card.scheduling[this.scheduler.name])
+    })[0]
   }
 
   answerCurrent(quality: 0 | 1 | 2 | 3 | 4 | 5) {
