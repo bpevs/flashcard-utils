@@ -4,3 +4,8 @@ export { default as Deck } from './models/deck.ts'
 export { default as Note } from './models/note.ts'
 export { default as Template } from './models/template.ts'
 export * from './models/types.ts'
+
+import * as basic from './schedulers/basic.ts'
+import * as sm2 from './schedulers/sm2.ts'
+
+export const scheduler = { basic, sm2 }
