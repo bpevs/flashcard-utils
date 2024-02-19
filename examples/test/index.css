@@ -7,18 +7,38 @@
   justify-content: center;
 }
 
-#flashcard {
+#cards {
+  height: 200px;
+  width: 200px;
+}
+
+.card-wrapper {
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0s 0.2s, opacity 0.2s linear;
+}
+
+flash-card {
   width: 300px;
   height: 300px;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
-#buttons {
+.buttons {
   padding: 20px;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.2s, opacity 0.2s linear;
 }
 
-#buttons button {
+.buttons button {
   margin: 10px;
   font-size: 2em;
   cursor: pointer;
+}
+
+.show {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.2s linear;
 }

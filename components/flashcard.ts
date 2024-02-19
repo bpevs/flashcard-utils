@@ -69,7 +69,7 @@ export default class Flashcard extends HTMLElement {
       }
     `
 
-    const isFlipped = this.getAttribute('flipped') == 'false'
+    const isFlipped = this.getAttribute('flipped') == 'true'
 
     this.cardEl.className = isFlipped ? 'card' : 'card'
     this.cardContentEl.className = isFlipped ? 'card-content' : 'card-content'
