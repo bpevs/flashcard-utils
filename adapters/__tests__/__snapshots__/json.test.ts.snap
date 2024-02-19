@@ -1,7 +1,7 @@
 export const snapshot = {};
 
 snapshot[`init Deck to/from JSON 1`] = `
-'{
+[32m'{
   "id": "zh-CN",
   "idNum": 1221044567,
   "name": "中文（普通话）",
@@ -33,5 +33,5 @@ snapshot[`init Deck to/from JSON 1`] = `
     ["transportation", "🚗", "汽车", "qì chē", "[sound:zh-cn_汽车.mp3]"],
     ["verbs", "❤️😍", "爱", "ài", "[sound:zh-cn_爱.mp3]"]
   ]
-}'
+}'[39m
 `;

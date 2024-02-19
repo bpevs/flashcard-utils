@@ -112,7 +112,7 @@ export async function writeToArray(
   const fieldNames = fields.map((name) => ({ name }))
   fieldNames.unshift(fieldNames.splice(sortFieldIndex, 1)[0])
 
-  const guidComponentNames = [id].concat((watch.length) ? watch : fields)
+  const guidComponentNames = (watch.length) ? watch : fields
 
   const decksArr: Array<{
     id: number
@@ -184,7 +184,9 @@ export async function writeToArray(
       },
       fields: fieldNames.map(({ name }) => note.content[name]),
       tags: [],
-      guid: ankiHash(guidComponentNames.map((field) => note.content[field])),
+      guid: ankiHash(
+        [id].concat(guidComponentNames.map((field) => note.content[field])),
+      ),
     })),
   }]
 
