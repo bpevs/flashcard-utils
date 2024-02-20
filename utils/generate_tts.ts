@@ -13,10 +13,10 @@ export default async function generateAudio(
     voiceId: string
     apiRegion: string
     apiKey: string
-    textField: string
+    fromField: string
   },
 ) {
-  const { locale, voiceId, apiRegion, apiKey, textField } = options
+  const { locale, voiceId, apiRegion, apiKey, fromField } = options
   await ensureDir(audioDir)
   const existingAudioFiles: Set<string> = new Set()
 
@@ -28,12 +28,13 @@ export default async function generateAudio(
     .filter((note: Note) => !existingAudioFiles.has(getAudioFilename(note.id)))
     .slice(0, 100)
 
-  const texts = notes.map((note: Note) => note.content[textField])
+  const texts = notes.map((note: Note) => note.content[fromField])
   const tempAudio = await ttsAzure(texts, locale, voiceId, apiRegion, apiKey)
   console.log('source audio id: ', JSON.stringify(tempAudio))
   if (!tempAudio) throw new Error('tts failed')
   console.log('source audio saved: ', tempAudio)
   await writeAudioFiles(notes, tempAudio)
+  await Deno.remove('temp.mp3')
 }
 
 async function ttsAzure(
@@ -128,7 +129,7 @@ async function writeAudioFiles(notes: Note[], sourceURL: string) {
   }
 
   // last file
-  const key = notes[count].id
+  const key = notes[count]?.id
   if (!key) {
     console.warn(`Careful about mismatching: ${sourceURL}`)
     return

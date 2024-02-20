@@ -11,7 +11,7 @@ const AZURE_API_ENDPOINT =
 export interface Options {
   fromLang?: string
   toLang: string
-  api: API
+  api?: API
   apiKey: string
   apiRegion?: string
 }
@@ -33,6 +33,9 @@ export default async function generateTranslations(
     options.apiRegion,
   )
   notes.forEach((note, index) => note.content[toField] = translated[index])
+  deck.content.fields = deck.content.fields
+    .filter((field) => field !== toField)
+    .concat([toField])
   return deck
 }
 

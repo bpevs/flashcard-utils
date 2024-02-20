@@ -13,6 +13,9 @@ const options = {
   entryPoints: [
     { out: './mod', in: './mod.ts' },
     { out: 'adapters/mod', in: './adapters/mod.ts' },
+    { out: 'components/mod', in: './components/mod.ts' },
+    { out: 'schedulers/mod', in: './schedulers/mod.ts' },
+    { out: 'utils/mod', in: './utils/mod.ts' },
   ],
   format: 'esm',
   outdir: './',

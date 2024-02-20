@@ -8,12 +8,13 @@
     "semiColons": false
   },
   "lint": {
-    "exclude": ["mod.js", "adapters/mod.js"]
+    "exclude": ["**/mod.js"]
   },
   "tasks": {
     "build": "deno run --allow-read --allow-write --allow-env --allow-run ./build.ts",
     "test": "deno fmt && deno lint && deno check mod.ts && deno check adapters/mod.ts && deno test -A",
     "test:update": "deno test -A -- --update",
-    "dev": "deno run -A --watch examples/test/main.ts"
+    "example:sandbox": "deno run -A --watch examples/sandbox/main.ts",
+    "example:words-to-apkg": "deno run -A examples/words-to-apkg/main.ts"
   }
 }
