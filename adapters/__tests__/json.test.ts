@@ -1,4 +1,4 @@
-import { assertSnapshot } from 'jsr:@std/testing/snapshot'
+import { assertSnapshot } from 'jsr:@std/testing@0.216/snapshot'
 import fromJSON from '../from_json.ts'
 import toJSON from '../to_json.ts'
 import deckData from './__data__/zh_CN.ts'

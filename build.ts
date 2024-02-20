@@ -11,7 +11,7 @@ import { denoPlugins } from 'https://deno.land/x/esbuild_deno_loader@0.9.0/mod.t
 const options = {
   bundle: true,
   entryPoints: [
-    { out: './mod', in: './mod.ts' },
+    { out: 'core/mod', in: './core/mod.ts' },
     { out: 'adapters/mod', in: './adapters/mod.ts' },
     { out: 'components/mod', in: './components/mod.ts' },
     { out: 'schedulers/mod', in: './schedulers/mod.ts' },

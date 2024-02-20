@@ -1,5 +1,4 @@
-import Deck from '../models/deck.ts'
-import Note from '../models/note.ts'
+import { Deck, Note } from 'jsr:@flashcard/core@0.0.1'
 import type { ExportObj } from './types.ts'
 
 export default function toOBJ(deck: Deck): ExportObj {

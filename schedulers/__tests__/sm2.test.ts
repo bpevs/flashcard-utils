@@ -1,5 +1,5 @@
-import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert'
-import { FakeTime } from 'jsr:@std/testing/time'
+import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert@0.216'
+import { FakeTime } from 'jsr:@std/testing@0.216/time'
 import { filter, init, S, sort, update } from '../sm2.ts'
 
 const ms = 1500000000000

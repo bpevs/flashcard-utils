@@ -1,5 +1,5 @@
-import Deck from '../models/deck.ts'
-import Note, { Content } from '../models/note.ts'
+import { Deck, Note } from 'jsr:@flashcard/core@0.0.1'
+import { Content } from 'jsr:@flashcard/core@0.0.1/note'
 import type { ExportObj } from './types.ts'
 
 export default function fromOBJ(

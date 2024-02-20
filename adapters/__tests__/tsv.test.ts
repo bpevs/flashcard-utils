@@ -1,5 +1,5 @@
-import { assertEquals } from 'jsr:@std/assert'
-import { assertSnapshot } from 'jsr:@std/testing/snapshot'
+import { assertEquals } from 'jsr:@std/assert@0.216'
+import { assertSnapshot } from 'jsr:@std/testing@0.216/snapshot'
 import fromOBJ from '../from_obj.ts'
 import fromTSV from '../from_tsv.ts'
 import toTSV from '../to_tsv.ts'

@@ -1,4 +1,4 @@
-import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert'
+import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert@0.216'
 import { filter, init, S, sort, update } from '../basic.ts'
 
 Deno.test('init', () => {

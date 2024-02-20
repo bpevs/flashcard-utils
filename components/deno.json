@@ -1,0 +1,11 @@
+{
+  "name": "@flashcard/components",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./mod.ts",
+    "./flashcard": "./flashcard.ts"
+  },
+  "compilerOptions": {
+    "lib": ["esnext", "deno.window", "dom"]
+  }
+}

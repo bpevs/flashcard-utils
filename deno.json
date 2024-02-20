@@ -1,13 +1,4 @@
 {
-  "name": "@bpev/flashcards",
-  "version": "0.0.1",
-  "exports": {
-    ".": "./mod.ts",
-    "./adapters": "./adapters/mod.ts",
-    "./components": "./components/mod.ts",
-    "./schedulers": "./schedulers/mod.ts",
-    "./utils": "./utils/mod.ts"
-  },
   "compilerOptions": {
     "lib": ["esnext", "dom", "deno.window", "dom"]
   },
@@ -19,9 +10,20 @@
   "lint": {
     "exclude": ["**/mod.js"]
   },
+  "imports": {
+    "jsr:@flashcard/adapters@0.0.1": "./adapters/mod.ts",
+    "jsr:@flashcard/adapters@0.0.1/": "./adapters/",
+    "jsr:@flashcard/core@0.0.1": "./core/mod.ts",
+    "jsr:@flashcard/core@0.0.1/": "./core/",
+    "jsr:@flashcard/schedulers@0.0.1": "./schedulers/mod.ts",
+    "jsr:@flashcard/schedulers@0.0.1/": "./schedulers/",
+    "jsr:@flashcard/utils@0.0.1": "./utils/mod.ts",
+    "jsr:@flashcard/utils@0.0.1/": "./utils/"
+  },
   "tasks": {
     "build": "deno run --allow-read --allow-write --allow-env --allow-run ./build.ts",
-    "test": "deno fmt && deno lint && deno check mod.ts && deno check adapters/mod.ts && deno test -A",
+    "check": "deno check adapters/mod.ts && deno check components/mod.ts && deno check core/mod.ts && deno check schedulers/mod.ts && deno check utils/mod.ts",
+    "test": "deno fmt && deno lint && deno task check && deno test -A",
     "test:update": "deno test -A -- --update",
     "example:sandbox": "deno run -A --watch examples/sandbox/main.ts",
     "example:words-to-apkg": "deno run -A examples/words-to-apkg/main.ts"

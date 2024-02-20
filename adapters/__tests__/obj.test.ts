@@ -1,4 +1,4 @@
-import { assertEquals } from 'jsr:@std/assert'
+import { assertEquals } from 'jsr:@std/assert@0.216'
 import fromOBJ from '../from_obj.ts'
 import toOBJ from '../to_obj.ts'
 import deckData from './__data__/zh_CN.ts'

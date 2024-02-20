@@ -1,5 +1,4 @@
-import { intersect } from 'jsr:@std/collections/intersect'
-import sm2 from '../schedulers/sm2.ts'
+import { intersect } from 'jsr:@std/collections@0.216/intersect'
 import Card from './card.ts'
 import Note from './note.ts'
 import Template from './template.ts'
@@ -25,7 +24,7 @@ export default class Deck {
   name: string
   desc: string
   notes: Record<string, Note>
-  scheduler: Scheduler
+  scheduler?: Scheduler
   content: ContentInfo
   meta?: Meta
 
@@ -47,15 +46,16 @@ export default class Deck {
     this.desc = desc
     this.notes = notes || {}
     this.content = content
-    this.scheduler = scheduler || sm2
+    this.scheduler = scheduler
     if (meta) this.meta = meta
   }
 
-  get templates() {
+  get templates(): Template[] {
     return Object.values(this.notes)[0].templates || []
   }
 
-  get cards() {
+  get cards(): Card[] {
+    if (!this.scheduler) return []
     const { init, sort, name } = this.scheduler
     return Object.values(this.notes)
       .map((note) => note.cards)
@@ -68,19 +68,20 @@ export default class Deck {
       )
   }
 
-  getCurrent() {
+  getCurrent(): Card | void {
+    if (!this.scheduler) return
     const { init, filter, name } = this.scheduler
     return this.cards.filter((card: Card) => {
       return filter(init(card.scheduling[name]))
     })[0]
   }
 
-  answerCurrent(quality: 0 | 1 | 2 | 3 | 4 | 5) {
+  answerCurrent(quality: 0 | 1 | 2 | 3 | 4 | 5): void {
     const currCard = this.getCurrent()
-    currCard.answer(this, quality)
+    if (currCard) currCard.answer(this, quality)
   }
 
-  addNote(note: Note) {
+  addNote(note: Note): void {
     const noteFields = Object.keys(note.content)
     const commonFields = intersect(noteFields, this.content.fields)
     if (commonFields.length !== this.content.fields.length) {
@@ -89,7 +90,7 @@ export default class Deck {
     this.notes[note.id] = note
   }
 
-  addTemplate(template: Template) {
+  addTemplate(template: Template): void {
     Object.values(this.notes)
       .forEach((note) => note.templates.push(template))
   }

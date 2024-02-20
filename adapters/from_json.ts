@@ -1,4 +1,4 @@
-import Deck from '../models/deck.ts'
+import { Deck } from 'jsr:@flashcard/core@0.0.1'
 import fromOBJ from './from_obj.ts'
 
 export default function fromJSON(

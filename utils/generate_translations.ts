@@ -1,4 +1,4 @@
-import Deck from '../models/deck.ts'
+import { Deck } from 'jsr:@flashcard/core@0.0.1'
 
 export enum API {
   DEEPL = 0,
@@ -21,13 +21,13 @@ export default async function generateTranslations(
   fromField: string,
   toField: string,
   options: Options,
-) {
+): Promise<Deck> {
   const notes = Object.values(deck.notes)
   const texts = notes.map((note) => note.content[fromField])
   const translated = await translateTexts(
     texts,
     options.fromLang || 'en',
-    options.toLang,
+    options.toLang || 'en',
     options.api ?? API.AZURE,
     options.apiKey,
     options.apiRegion,
@@ -42,7 +42,7 @@ export default async function generateTranslations(
 export const translateTexts = (
   texts: string[],
   fromLang: string,
-  toLang = 'en',
+  toLang: string,
   api: API,
   apiKey: string,
   apiRegion = 'westus',

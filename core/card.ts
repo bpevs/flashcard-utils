@@ -35,15 +35,16 @@ export default class Card {
     this.scheduling = scheduling
   }
 
-  renderQuestion() {
+  renderQuestion(): string {
     return this.template.renderQuestion(this.note.content)
   }
 
-  renderAnswer() {
+  renderAnswer(): string {
     return this.template.renderAnswer(this.note.content)
   }
 
-  answer(deck: Deck, quality: 0 | 1 | 2 | 3 | 4 | 5) {
+  answer(deck: Deck, quality: 0 | 1 | 2 | 3 | 4 | 5): Scheduling | void {
+    if (!deck.scheduler) return
     const { name, init, update } = deck.scheduler
     this.scheduling[name] = update(init(this.scheduling[name]), quality)
     return this.scheduling[name]

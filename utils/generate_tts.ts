@@ -1,8 +1,7 @@
-import { join } from 'https://deno.land/std@0.200.0/path/mod.ts'
-import { ensureDir } from 'https://deno.land/std@0.200.0/fs/mod.ts'
-import { writeAll } from 'https://deno.land/std@0.200.0/streams/write_all.ts'
-import Deck from '../models/deck.ts'
-import Note from '../models/note.ts'
+import { join } from 'jsr:@std/path@0.216'
+import { ensureDir } from 'jsr:@std/fs@0.216'
+import { writeAll } from 'jsr:@std/io@0.216'
+import { Deck, Note } from 'jsr:@flashcard/core@0.0.1'
 
 const audioDir = './audio'
 
@@ -15,7 +14,7 @@ export default async function generateAudio(
     apiKey: string
     fromField: string
   },
-) {
+): Promise<Deck> {
   const { locale, voiceId, apiRegion, apiKey, fromField } = options
   await ensureDir(audioDir)
   const existingAudioFiles: Set<string> = new Set()
@@ -35,6 +34,7 @@ export default async function generateAudio(
   console.log('source audio saved: ', tempAudio)
   await writeAudioFiles(notes, tempAudio)
   await Deno.remove('temp.mp3')
+  return deck
 }
 
 async function ttsAzure(
@@ -145,7 +145,7 @@ async function writeAudioFiles(notes: Note[], sourceURL: string) {
   console.log(notes.length, count)
 }
 
-export function getAudioFilename(key: string) {
+export function getAudioFilename(key: string): string {
   const replacement = ''
   return `${key}.mp3`
     .toLowerCase()
