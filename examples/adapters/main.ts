@@ -1,5 +1,5 @@
 import Template from '../../models/template.ts'
-import { fromTSV, toAPKG as _toAPKG } from '../../adapters/mod.ts'
+import { fromTSV, toAPKG as toAPKG } from '../../adapters/mod.ts'
 import generateAudio from '../../utils/generate_audio.ts'
 
 const url =
@@ -16,10 +16,25 @@ const deck = fromTSV(resp, {
 })
 
 deck.addTemplate(
-  new Template('Reading', '{{Chinese}}', '{{English}} ({{Pinyin}})'),
+  new Template(
+    'Reading',
+    '{{Chinese}}',
+    '{{English}} ({{Pinyin}})<br/> {{Audio}}',
+  ),
 )
 deck.addTemplate(
-  new Template('Speaking', '{{English}}', '{{Chinese}} ({{Pinyin}})'),
+  new Template(
+    'Speaking',
+    '{{English}}',
+    '{{Chinese}} ({{Pinyin}})<br/> {{Audio}}',
+  ),
+)
+deck.addTemplate(
+  new Template(
+    'Listening',
+    '{{Audio}}',
+    '{{Chinese}} ({{Pinyin}})<br/> {{English}}',
+  ),
 )
 
 generateAudio(deck, {
@@ -30,4 +45,23 @@ generateAudio(deck, {
   textField: 'Chinese',
 })
 
-// await Deno.writeFile('./HSK-1.apkg', await toAPKG(deck))
+const media: Array<{ name: string; data: Blob }> = []
+deck.content.fields.push('Audio')
+
+await Promise.all(
+  Object.values(deck.notes).map(async (note) => {
+    const audioFilename = `${note.id}.mp3`
+    const audioLocation = `./audio/${note.id}.mp3`
+    note.content.Audio = `[sound:${audioFilename}]`
+
+    try {
+      const fileBytes = await Deno.readFile(audioLocation)
+      const data = new Blob([fileBytes], { type: 'audio/mpeg' })
+      media.push({ name: audioFilename, data })
+    } catch {
+      console.warn('Missing audio file: ', audioFilename)
+    }
+  }),
+)
+
+await Deno.writeFile('./HSK-1.apkg', await toAPKG(deck, { media }))
