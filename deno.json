@@ -1,4 +1,13 @@
 {
+  "name": "@bpev/flashcards",
+  "version": "0.0.1",
+  "exports": {
+    ".": "./mod.ts",
+    "./adapters": "./adapters/mod.ts",
+    "./components": "./components/mod.ts",
+    "./schedulers": "./schedulers/mod.ts",
+    "./utils": "./utils/mod.ts"
+  },
   "compilerOptions": {
     "lib": ["esnext", "dom", "deno.window", "dom"]
   },
