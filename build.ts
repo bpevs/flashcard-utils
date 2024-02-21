@@ -5,9 +5,12 @@
  *   1. `mod.js` contains everything EXCEPT adapters.
  *   2. `adapters/mod.js` contains adapters, since they have more dependencies
  */
+import type { Format } from 'npm:esbuild'
 import * as esbuild from 'npm:esbuild'
-import { denoPlugins } from 'https://deno.land/x/esbuild_deno_loader@0.9.0/mod.ts'
+import { denoPlugins } from 'jsr:@luca/esbuild-deno-loader@0.9.0'
+import { resolve } from 'jsr:@std/path@0.215.0'
 
+const importMapURL = 'file://' + resolve('./import_map.json')
 const options = {
   bundle: true,
   entryPoints: [
@@ -17,16 +20,17 @@ const options = {
     { out: 'schedulers/mod', in: './schedulers/mod.ts' },
     { out: 'utils/mod', in: './utils/mod.ts' },
   ],
-  format: 'esm',
+  format: 'esm' as Format,
   outdir: './',
-  plugins: [...denoPlugins()],
+  plugins: [...denoPlugins({ importMapURL })],
   treeShaking: true,
 }
 
 await esbuild.build(options)
 esbuild.stop()
 
-export const build = debounce(async function () {
+// deno-lint-ignore no-explicit-any
+export const build = debounce<any>(async function () {
   const result = await esbuild.build({
     ...options,
     write: false,
@@ -35,14 +39,17 @@ export const build = debounce(async function () {
   return result.outputFiles
 }, 100)
 
-// deno-lint-ignore no-explicit-any
-function debounce(func: (...args: any[]) => any, wait: number) {
+function debounce<R>(
+  // deno-lint-ignore no-explicit-any
+  func: (...args: any[]) => any,
+  wait: number,
+): () => Promise<R> {
   // deno-lint-ignore no-explicit-any
   const resolves: any[] = []
   let timer: number
 
   // deno-lint-ignore no-explicit-any
-  return function debounced(...args: any[]) {
+  return function debounced(...args: any[]): Promise<R> {
     return new Promise((resolve) => {
       resolves.push(resolve)
       const later = () => {

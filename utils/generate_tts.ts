@@ -1,7 +1,7 @@
 import { join } from 'jsr:@std/path@0.216'
 import { ensureDir } from 'jsr:@std/fs@0.216'
 import { writeAll } from 'jsr:@std/io@0.216'
-import { Deck, Note } from 'jsr:@flashcard/core@0.0.1'
+import { Deck, Note } from '@flashcard/core'
 
 const audioDir = './audio'
 

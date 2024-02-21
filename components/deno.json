@@ -6,6 +6,6 @@
     "./flashcard": "./flashcard.ts"
   },
   "compilerOptions": {
-    "lib": ["esnext", "deno.window", "dom"]
+    "lib": ["es2023", "dom"]
   }
 }

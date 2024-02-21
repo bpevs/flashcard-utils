@@ -1,4 +1,4 @@
-import { Deck, Meta } from 'jsr:@flashcard/core@0.0.1'
+import { Deck, Meta } from '@flashcard/core'
 import fromOBJ from './from_obj.ts'
 
 export default function fromTSV(

@@ -1,24 +1,27 @@
 {
   "compilerOptions": {
-    "lib": ["esnext", "dom", "deno.window", "dom"]
+    "strict": true,
+    "useUnknownInCatchVariables": true,
+    "noImplicitOverride": true,
+    "lib": ["deno.window", "dom", "es2023"]
   },
   "fmt": {
     "proseWrap": "never",
     "singleQuote": true,
     "semiColons": false
   },
+  "imports": {
+    "@flashcard/adapters": "jsr:@flashcard/adapters@0.0.1",
+    "@flashcard/adapters/": "jsr:@flashcard/adapters@0.0.1/",
+    "@flashcard/core": "jsr:@flashcard/core@0.0.1",
+    "@flashcard/core/": "jsr:@flashcard/core@0.0.1/",
+    "@flashcard/schedulers": "jsr:@flashcard/schedulers@0.0.1",
+    "@flashcard/schedulers/": "jsr:@flashcard/schedulers@0.0.1/",
+    "@flashcard/utils": "jsr:@flashcard/utils@0.0.1",
+    "@flashcard/utils/": "jsr:@flashcard/utils@0.0.1/"
+  },
   "lint": {
     "exclude": ["**/mod.js"]
-  },
-  "imports": {
-    "jsr:@flashcard/adapters@0.0.1": "./adapters/mod.ts",
-    "jsr:@flashcard/adapters@0.0.1/": "./adapters/",
-    "jsr:@flashcard/core@0.0.1": "./core/mod.ts",
-    "jsr:@flashcard/core@0.0.1/": "./core/",
-    "jsr:@flashcard/schedulers@0.0.1": "./schedulers/mod.ts",
-    "jsr:@flashcard/schedulers@0.0.1/": "./schedulers/",
-    "jsr:@flashcard/utils@0.0.1": "./utils/mod.ts",
-    "jsr:@flashcard/utils@0.0.1/": "./utils/"
   },
   "tasks": {
     "build": "deno run --allow-read --allow-write --allow-env --allow-run ./build.ts",
@@ -27,5 +30,12 @@
     "test:update": "deno test -A -- --update",
     "example:sandbox": "deno run -A --watch examples/sandbox/main.ts",
     "example:words-to-apkg": "deno run -A examples/words-to-apkg/main.ts"
-  }
+  },
+  "workspaces": [
+    "./adapters",
+    "./components",
+    "./core",
+    "./schedulers",
+    "./utils"
+  ]
 }

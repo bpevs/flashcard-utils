@@ -1,4 +1,4 @@
-import { Template } from 'jsr:@flashcard/core@0.0.1'
+import { Template } from '@flashcard/core'
 import fromJSON from '../from_json.ts'
 import toAPKG from '../to_apkg.ts'
 import deckData from './__data__/zh_CN.ts'

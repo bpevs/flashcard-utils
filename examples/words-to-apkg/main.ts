@@ -5,10 +5,9 @@
  *  3. Run text-to-speech on the Spanish field, and add an `Audio` field
  *  4. Export the deck to an Anki `.apkg` file
  */
-import Template from '../../models/template.ts'
-import { fromTSV, toAPKG as toAPKG } from '../../adapters/mod.ts'
-import generateTTS from '../../utils/generate_tts.ts'
-import generateTranslations from '../../utils/generate_translations.ts'
+import { Template } from '@flashcard/core'
+import { fromTSV, toAPKG as toAPKG } from '@flashcard/adapters'
+import { generateTranslations, generateTTS } from '@flashcard/utils'
 
 const locale = 'es-MX'
 const voiceId = 'es-MX-JorgeNeural'

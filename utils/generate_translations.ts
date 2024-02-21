@@ -1,4 +1,4 @@
-import { Deck } from 'jsr:@flashcard/core@0.0.1'
+import { Deck } from '@flashcard/core'
 
 export enum API {
   DEEPL = 0,

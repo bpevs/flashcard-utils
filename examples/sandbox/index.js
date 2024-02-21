@@ -1,5 +1,7 @@
-import { Flashcard, schedulers, Template } from 'flashcards'
-import { fromJSON } from 'flashcards/adapters'
+import { Template } from '@flashcard/core'
+import { Flashcard } from '@flashcard/components'
+import { fromJSON } from '@flashcard/adapters'
+import { basic } from '@flashcard/schedulers'
 
 customElements.define('flash-card', Flashcard)
 
@@ -13,7 +15,7 @@ let currCardEl
 
 fetch('/data.json').then((resp) => resp.text()).then(function setup(data) {
   const deck = fromJSON(data, { sortField: 'emoji' })
-  deck.scheduler = schedulers.basic
+  deck.scheduler = basic
   deck.addTemplate(
     new Template('basic', '<h1>{{emoji}}</h1>', '<h1>{{text}}</h1>'),
   )
