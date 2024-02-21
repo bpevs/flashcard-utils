@@ -1,16 +1,53 @@
 # Flashcard Utils
 
-Flashcard Utils are a set of utilities for creating and working with study flashcards. It provides structure so that you can focus on content, algorithms, or ui.
+Flashcard Utils is a set of utilities to make it easier to create apps around study flashcards. It provides structure so that you can focus on content, algorithms, ui, or whatever makes your idea unique!
 
-## Example
+## Examples
 
-```jsx
-import { fromJSON, toAPKG } from '@flashcard/adapters'
-import { Deck, Note, Template } from '@flashcard/core'
-import { Flashcard } from '@flashcard/components'
-import { sm2 } from '@flashcard/schedulers'
+### Flashcard code structure
 
-const deck = fromTSV(`
+```js
+import { Deck, Note, Template } from 'jsr:@flashcard/core'
+import { sm2 } from 'jsr:@flashcard/schedulers'
+
+const deck = new Deck({
+  id: "my-fruit-deck",
+  name: "Fruits in English and Spanish",
+  desc: "But only the ones I like",
+  content: { fields: [ "Emoji", "English", "Spanish" ] },
+})
+
+deck.addNote(new Note("🍓", {
+  content: { Emoji: "🍓", English: "strawberry", Spanish: "fresa" }
+}))
+
+// Add templates for different visual representations of a Note
+deck.addTemplate(new Template('Reading', '<h1>{{Spanish}}</h1>', '{{English}}'))
+deck.addTemplate(new Template('Speaking', '<h1>{{Emoji}}</h1>', '{{Spanish}}'))
+
+// If you are building an app that needs card selection, you can
+// use a pre-built scheduler (like Supermemo 2), or make your own!
+deck.scheduler = sm2
+
+// `getCurrent` here selects a card using the `sm2` algorithm
+const currCard = deck.getCurrent()
+currCard.answer(2)
+```
+
+### Import Decks
+
+You can parse various data sources to import your decks, or store them in readable formats.
+You can also export decks!
+
+```js
+import { fromJSON, fromTSV, toAPKG } from 'jsr:@flashcard/adapters'
+
+// Import and export from JSON string
+const resp = await fetch('/my-deck.json').then(resp => resp.json())
+const deckA = fromJSON(resp)
+
+// Import and export from TSV
+const deckB = fromTSV(`
   Emoji	English	Spanish
   🍎	apple	manzana
   🍊	orange	naranja
@@ -23,17 +60,21 @@ const deck = fromTSV(`
   }
 })
 
-deck.addTemplate(new Template('Reading', '{{Spanish}}', '{{English}}'))
-deck.addTemplate(new Template('Speaking', '{{Emoji}}', '{{Spanish}}'))
+// You can even export into an Anki deck (but no importing quite yet)
+Deno.writeFile('my-deck.apkg', await toAPKG(deckA))
+```
 
-deck.addNote(new Note("🍓", {
-  content: { Emoji: "🍓", English: "strawberry", Spanish: "fresa" }
-}))
+# Components
 
-// You can build an app, using the scheduler and built in web components...
-deck.scheduler = sm2 // Use Supermemo 2, or even make your own scheduler!
+We also have web components for creating your own app!
+Use them in your Javascript framework of choice.
 
-function AppWithWebComponent() {
+```jsx
+import { FlashCard } from 'jsr:@flashcard/components'
+
+customElements.define('flash-card', Flashcard)
+
+export default function MyComponent() {
   const currCard = deck.getCurrent()
   return (
     <div>
@@ -49,7 +90,8 @@ function AppWithWebComponent() {
     </div>
   )
 }
-
-// Or export to another format to use with other flashcard apps!
-Deno.writeFile('my-deck.apkg', await toAPKG(deck))
 ```
+
+### More Examples
+
+You can see more examples [in the examples directory](./examples)
