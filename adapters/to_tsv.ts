@@ -3,15 +3,15 @@ import toOBJ from './to_obj.ts'
 
 export default function toTSV(deck: Deck): string {
   const obj = toOBJ(deck)
-  let tsv = obj.content.fields.join('\t') + '\n'
+  let tsv = obj.fields.join('\t') + '\n'
 
-  obj.notes.forEach((row: string[]) => {
+  obj.notes.forEach((row: Array<string | number>) => {
     tsv += row.map(format).join('\t') + '\n'
   })
 
   return tsv
 }
 
-function format(str: string): string {
-  return str.replace(/\t/g, ' ').replace(/\n/g, ' <br/> ')
+function format(str: string | number): string {
+  return String(str).replace(/\t/g, ' ').replace(/\n/g, ' <br/> ')
 }

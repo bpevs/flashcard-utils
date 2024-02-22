@@ -1,22 +1,18 @@
 import Deck from './deck.ts'
 import Note from './note.ts'
 import Template from './template.ts'
-import type { S } from './types.ts'
 
 export interface Scheduling {
-  [key: string]: S
+  // deno-lint-ignore no-explicit-any
+  [key: string]: Record<PropertyKey, any>
 }
 
-const basicTemplate = new Template(
-  'basic',
-  '{{question}}',
-  '{{answer}}',
-)
-
-// A visual representation of a Note. A card contains no actual data.
-// Instead, it contains:
-//   1. A template, showing how to display a Note's data
-//   2. Scheduling information, used by various algorithms
+/**
+ *  A visual representation of a Note. A card contains no actual data.
+ *  Instead, it contains:
+ *   1. A template, showing how to display a Note's data
+ *   2. Scheduling information, used by various algorithms
+ */
 export default class Card {
   id: string
   template: Template
@@ -26,7 +22,7 @@ export default class Card {
   constructor(
     id: string,
     note: Note,
-    template: Template = basicTemplate,
+    template: Template = new Template('basic', '{{question}}', '{{answer}}'),
     scheduling: Scheduling = {},
   ) {
     this.id = id
@@ -35,18 +31,18 @@ export default class Card {
     this.scheduling = scheduling
   }
 
-  renderQuestion(): string {
-    return this.template.renderQuestion(this.note.content)
+  get content() {
+    return this.note.content
   }
 
-  renderAnswer(): string {
-    return this.template.renderAnswer(this.note.content)
-  }
-
-  answer(deck: Deck, quality: 0 | 1 | 2 | 3 | 4 | 5): Scheduling | void {
+  answer(deck: Deck, quality: number): Scheduling | void {
     if (!deck.scheduler) return
     const { name, init, update } = deck.scheduler
     this.scheduling[name] = update(init(this.scheduling[name]), quality)
     return this.scheduling[name]
+  }
+
+  render(): { question: string; answer: string } {
+    return this.template.render(this.note.content)
   }
 }

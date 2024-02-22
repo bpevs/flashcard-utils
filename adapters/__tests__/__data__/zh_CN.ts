@@ -13,10 +13,8 @@ export default Object.freeze({
     locale_flag: '🇨🇳',
     voice_id_azure: 'zh-CN-XiaoxiaoNeural',
   },
-  content: {
-    fields: ['category', 'emoji', 'text', 'pinyin', 'sound'],
-    watch: ['emoji', 'text', 'pinyin'],
-  },
+  fields: ['category', 'emoji', 'text', 'pinyin', 'sound'],
+  watch: ['emoji', 'text', 'pinyin'],
   notes: [
     ['animal', '🐈', '猫', 'māo', '[sound:zh-cn_猫.mp3]'],
     ['animal', '🐶', '狗', 'gǒu', '[sound:zh-cn_狗.mp3]'],

@@ -104,8 +104,7 @@ async function writeToArray(
   sortField: string | void,
   media: Media = [],
 ) {
-  const { id, content } = deck
-  const { fields = [], watch = [] } = content
+  const { id, fields = [], watch = [] } = deck
   const sortFieldIndex = Math.max(sortField ? fields.indexOf(sortField) : 0, 0)
   const fieldNames = fields.map((name) => ({ name }))
   fieldNames.unshift(fieldNames.splice(sortFieldIndex, 1)[0])
@@ -151,7 +150,7 @@ async function writeToArray(
         type: 0,
         usn: 0,
         vers: [],
-        req: deck.templates.map((_, index) => [index, 'all', [0]]),
+        req: deck.getTemplates().map((_, index) => [index, 'all', [0]]),
         flds: (fieldNames || [])
           .map((field: Partial<AnkiField>, ord: number): AnkiField => ({
             name: field.name || '',
@@ -162,7 +161,7 @@ async function writeToArray(
             size: field.size || 20,
             media: field.media || [],
           })),
-        tmpls: (deck.templates || [])
+        tmpls: deck.getTemplates()
           .map((template) => ({
             name: template.id,
             qfmt: template.question,
@@ -180,10 +179,11 @@ async function writeToArray(
           })),
         mod: new Date().getTime() || 0,
       },
-      fields: fieldNames.map(({ name }) => note.content[name]),
+      fields: fieldNames.map(({ name }) => String(note.content[name])),
       tags: [],
       guid: ankiHash(
-        [id].concat(guidComponentNames.map((field) => note.content[field])),
+        [id].concat(guidComponentNames
+          .map((field) => String(note.content[field]))),
       ),
     })),
   }]

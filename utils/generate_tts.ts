@@ -27,7 +27,7 @@ export default async function generateAudio(
     .filter((note: Note) => !existingAudioFiles.has(getAudioFilename(note.id)))
     .slice(0, 100)
 
-  const texts = notes.map((note: Note) => note.content[fromField])
+  const texts = notes.map((note: Note) => String(note.content[fromField]))
   const tempAudio = await ttsAzure(texts, locale, voiceId, apiRegion, apiKey)
   console.log('source audio id: ', JSON.stringify(tempAudio))
   if (!tempAudio) throw new Error('tts failed')
