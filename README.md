@@ -2,6 +2,32 @@
 
 Flashcard Utils is a set of utilities to make it easier to create apps around study flashcards. It provides structure so that you can focus on content, algorithms, ui, or whatever makes your idea unique!
 
+## Importing
+
+### Deno
+
+If using **Deno**, you can simply import from [jsr.io](https://jsr.io/@flashcard)
+
+```
+import { Deck, Note, Template } from 'jsr:@flashcard/core'
+```
+
+<br />
+
+### Node
+
+If using **node.js**, you will have to add jsr to your package.json registries.
+Add this line to the project's .npmrc file or the global one.
+
+```
+@jsr:registry=https://npm.jsr.io
+```
+
+And then install packages via:
+```
+npm install @jsr/flashcard__core
+```
+
 ## Examples
 
 ### Flashcard code structure
