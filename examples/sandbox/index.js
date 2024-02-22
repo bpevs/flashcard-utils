@@ -33,7 +33,7 @@ fetch('/data.json').then((resp) => resp.text()).then(function setup(data) {
 })
 
 function renderCurrCard(deck) {
-  const currCard = deck.getCurrent()
+  const currCard = deck.getNext()
   const { cardEl, cardWrapperEl } = addFlashcard(deck)
   if (currCard) {
     const { question, answer } = currCard.render()
@@ -52,7 +52,7 @@ function addFlashcard(deck) {
   cardWrapperEl.className = 'card-wrapper'
   // On finished animating hide, delete the card element and render next
   cardWrapperEl.ontransitionend = (e) => {
-    if (!e.target.className.includes('show')) {
+    if (e.target && !e.target.className.includes('show')) {
       cardsEl.removeChild(e.target)
       currCardEl = renderCurrCard(deck)
     }

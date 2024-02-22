@@ -3,9 +3,7 @@
   "name": "中文（普通话）",
   "desc": "Flashcards for Chinese",
   "meta": {},
-  "content": {
-    "fields": ["emoji", "text", "pinyin"]
-  },
+  "fields": ["emoji", "text", "pinyin"],
   "notes": [
     ["🐈", "猫", "māo"],
     ["🐶", "狗", "gǒu"],

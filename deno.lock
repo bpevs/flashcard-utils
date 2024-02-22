@@ -1028,12 +1028,6 @@
     "https://jsr.io/@std/testing/0.216.0/time.ts": "61b6f16a19a1ac6db3bca94b7a6c0c54ca97e8a6d7861388b0a1c1dee867df44"
   },
   "workspace": {
-    "dependencies": [
-      "jsr:@flashcard/adapters@0.0.2",
-      "jsr:@flashcard/core@0.0.2",
-      "jsr:@flashcard/schedulers@0.0.2",
-      "jsr:@flashcard/utils@0.0.2"
-    ],
     "members": {
       "@flashcard/adapters": {},
       "@flashcard/components": {},
