@@ -23,7 +23,7 @@ export default async function generateTranslations(
   options: Options,
 ): Promise<Deck> {
   const notes = Object.values(deck.notes)
-  const texts = notes.map((note) => note.content[fromField])
+  const texts = notes.map((note) => String(note.content[fromField]))
   const translated = await translateTexts(
     texts,
     options.fromLang || 'en',
@@ -33,7 +33,7 @@ export default async function generateTranslations(
     options.apiRegion,
   )
   notes.forEach((note, index) => note.content[toField] = translated[index])
-  deck.content.fields = deck.content.fields
+  deck.fields = deck.fields
     .filter((field) => field !== toField)
     .concat([toField])
   return deck

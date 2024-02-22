@@ -1,8 +1,9 @@
-import { intersect } from 'jsr:@std/collections@0.216/intersect'
 import Card from './card.ts'
-import Note from './note.ts'
-import Template from './template.ts'
-import type { Meta, S } from './types.ts'
+import Note, { NoteContent } from './note.ts'
+import Template, { TemplateType } from './template.ts'
+
+// deno-lint-ignore no-explicit-any
+type S = Record<PropertyKey, any>
 
 interface Scheduler {
   name: string
@@ -12,53 +13,73 @@ interface Scheduler {
   update(s: S, quality: number): S
 }
 
-interface ContentInfo {
-  fields: string[] // Names of different content fields
-  watch?: string[] // Names of fields that are watched for updates
-}
-
-// A `Deck` represents a collection of notes.
+/**
+ * A `Deck` represents a collection of notes.
+ */
 export default class Deck {
   id: string
   idNum: number // For exports that use id number (Anki)
-  name: string
-  desc: string
-  notes: Record<string, Note>
+  name = ''
+  desc = ''
+  fields: string[] = [] // Names of different content fields
+  watch: string[] = [] // Names of fields that are watched for updates
+  notes: Record<string, Note> = {}
+  meta: Record<string, string> = {}
   scheduler?: Scheduler
-  content: ContentInfo
-  meta?: Meta
+  templates: Record<string, Template> = {}
 
-  constructor(
-    { id, idNum, name, desc, content, meta, scheduler, notes }: {
-      id: string
-      idNum?: number
-      name: string
-      desc: string
-      meta?: Meta
-      scheduler?: Scheduler
-      content: ContentInfo
-      notes: Record<string, Note>
-    },
-  ) {
+  constructor(id: string, props: {
+    idNum?: number
+    name?: string
+    desc?: string
+    fields?: string[]
+    watch?: string[]
+    notes?: Record<string, Note>
+    meta?: Record<string, string>
+    scheduler?: Scheduler
+  }) {
     this.id = id
-    this.idNum = idNum || encode(id)
-    this.name = name
-    this.desc = desc
-    this.notes = notes || {}
-    this.content = content
-    this.scheduler = scheduler
-    if (meta) this.meta = meta
+    this.idNum = props.idNum || encode(id)
+    if (props.name) this.name = props.name
+    if (props.notes) this.notes = props.notes
+    if (props.fields) this.fields = props.fields
+    if (props.watch) this.watch = props.watch
+    if (props.scheduler) this.scheduler = props.scheduler
+    if (props.desc) this.desc = props.desc
+    if (props.meta) this.meta = props.meta
   }
 
-  get templates(): Template[] {
-    return Object.values(this.notes)[0].templates || []
+  addNote(id: string, content: NoteContent, templates?: Template[]): void {
+    const note = new Note(id, content, templates)
+    const deckFields = this.fields
+    const noteFields = Object.keys(note.content)
+    const uniqueToDeck = deckFields.filter((f) => !noteFields.includes(f))
+    const uniqueToNote = noteFields.filter((f) => !deckFields.includes(f))
+
+    if (uniqueToDeck.length) {
+      throw new Error(`Note is missing fields req by deck: ${uniqueToDeck}`)
+    } else if (uniqueToNote.length) {
+      throw new Error(`Deck is missing fields req by note: ${uniqueToNote}`)
+    }
+
+    this.notes[note.id] = note
   }
 
-  get cards(): Card[] {
+  addTemplate(
+    id: string,
+    q: string,
+    a: string,
+    type?: TemplateType,
+    style?: string,
+  ): void {
+    this.templates[id] = new Template(id, q, a, type, style)
+  }
+
+  getCards(): Card[] {
     if (!this.scheduler) return []
     const { init, sort, name } = this.scheduler
     return Object.values(this.notes)
-      .map((note) => note.cards)
+      .map((note) => note.getCards(this.templates))
       .flat()
       .toSorted((cardA: Card, cardB: Card) =>
         sort(
@@ -68,31 +89,26 @@ export default class Deck {
       )
   }
 
-  getCurrent(): Card | void {
+  getNext(numCards = 1): Card[] | Card | void {
     if (!this.scheduler) return
     const { init, filter, name } = this.scheduler
-    return this.cards.filter((card: Card) => {
+    const cards = this.getCards().filter((card: Card) => {
       return filter(init(card.scheduling[name]))
-    })[0]
+    }).slice(0, numCards)
+    return numCards > 1 ? cards : cards[0]
   }
 
-  answerCurrent(quality: 0 | 1 | 2 | 3 | 4 | 5): void {
-    const currCard = this.getCurrent()
-    if (currCard) currCard.answer(this, quality)
+  getNotes(): Note[] {
+    return Object.values(this.notes)
   }
 
-  addNote(note: Note): void {
-    const noteFields = Object.keys(note.content)
-    const commonFields = intersect(noteFields, this.content.fields)
-    if (commonFields.length !== this.content.fields.length) {
-      throw new Error(`mismatched number of fields, ${this.content.fields}`)
-    }
-    this.notes[note.id] = note
+  getTemplates(): Template[] {
+    return Object.values(this.templates) || []
   }
 
-  addTemplate(template: Template): void {
-    Object.values(this.notes)
-      .forEach((note) => note.templates.push(template))
+  answerNext(quality: number): void {
+    const currCard = this.getNext()
+    if (currCard instanceof Card) currCard.answer(this, quality)
   }
 }
 

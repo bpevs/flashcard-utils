@@ -1,8 +1,9 @@
-import { Deck, Note } from '@flashcard/core'
+import { Deck } from '@flashcard/core'
 import type { ExportObj } from './types.ts'
 
 export default function toOBJ(deck: Deck): ExportObj {
-  const fields = deck.content.fields
+  const notes = Object.values(deck.notes)
+    .map((note) => deck.fields.map((field) => note.content[field]))
 
   const data: ExportObj = {
     id: deck.id,
@@ -10,13 +11,10 @@ export default function toOBJ(deck: Deck): ExportObj {
     name: deck.name,
     desc: deck.desc,
     meta: deck.meta,
-    content: { fields, watch: deck.content.watch },
-    notes: Object.values(deck.notes).map(
-      (note: Note) => fields.map((field: string) => note.content[field]),
-    ),
+    fields: deck.fields,
+    watch: deck.watch,
+    notes,
   }
-
-  if (!deck.meta) delete deck.meta
 
   return data
 }

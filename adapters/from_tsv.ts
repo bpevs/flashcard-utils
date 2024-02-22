@@ -1,4 +1,4 @@
-import { Deck, Meta } from '@flashcard/core'
+import { Deck } from '@flashcard/core'
 import fromOBJ from './from_obj.ts'
 
 export default function fromTSV(
@@ -9,7 +9,7 @@ export default function fromTSV(
       id: string
       name: string
       desc: string
-      meta?: Meta
+      meta?: { [key: string]: string }
     }
   },
 ): Deck {
@@ -17,7 +17,7 @@ export default function fromTSV(
   const fields = fieldRow.split('\t')
   return fromOBJ({
     ...options.meta,
-    content: { fields },
+    fields,
     notes: noteRows
       .map((row) => row.split('\t'))
       .filter((row) => row.length === fields.length),

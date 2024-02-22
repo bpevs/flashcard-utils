@@ -1,20 +1,17 @@
-import type { Content } from './note.ts'
+import { NoteContent } from './note.ts'
 
 /**
  * Template that describes how cards are displayed.
  * @todo add support for JSX-style templates for web via func
  */
-const DEFAULT_ANKI_STYLE = `.card {
-  font-family: arial;
-  font-size: 20px;
-  text-align: center;
-  color: black;
-  background-color: white;
-}`
+export enum TemplateType {
+  'JSX' = 0,
+  'ANKI',
+}
 
 export default class Template {
   id: string
-  type: 'ANKI' | 'JSX'
+  type: TemplateType
   question: string
   answer: string
   style: string
@@ -23,34 +20,39 @@ export default class Template {
     id: string,
     question: string,
     answer: string,
-    style = DEFAULT_ANKI_STYLE,
+    type = TemplateType.ANKI,
+    style = `.card {
+      font-family: arial;
+      font-size: 20px;
+      text-align: center;
+      color: black;
+      background-color: white;
+    }`,
   ) {
-    this.type = 'ANKI'
     this.id = id
     this.question = question
     this.answer = answer
+    this.type = type
     this.style = style
   }
 
-  renderQuestion(content: Content): string {
-    if (this.type === 'ANKI') {
+  render(
+    content: NoteContent,
+  ): { question: string; answer: string } {
+    if (this.type === TemplateType.ANKI) {
       let question = this.question
-      for (const key in content) {
-        question = question.replace(`{{${key}}}`, content[key])
-      }
-      return question
-    }
-    return ''
-  }
-
-  renderAnswer(content: Content): string {
-    if (this.type === 'ANKI') {
       let answer = this.answer
       for (const key in content) {
-        answer = answer.replace(`{{${key}}}`, content[key])
+        const replacer = new RegExp(`{{${key}}}`, 'g')
+        question = question.replace(replacer, String(content[key]))
+        answer = answer.replace(replacer, String(content[key]))
       }
-      return answer
+      return { question, answer }
     }
-    return ''
+    if (this.type === TemplateType.JSX) {
+      console.warn('JSX Templating is not currently supported')
+      return { question: '', answer: '' }
+    }
+    return { question: '', answer: '' }
   }
 }
