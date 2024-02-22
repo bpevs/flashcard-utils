@@ -18,7 +18,10 @@ const EF = 2.5
 const REPETITION = 0
 const INTERVAL = 0
 
-export default new Scheduler<ScheduleCache, Quality>({
+const sm2Scheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
+  ScheduleCache,
+  Quality
+>({
   name: 'sm2',
 
   /**
@@ -99,6 +102,8 @@ export default new Scheduler<ScheduleCache, Quality>({
     }
   },
 })
+
+export default sm2Scheduler
 
 function getDueDate(scheduleCache: ScheduleCache): Date | null {
   if (!scheduleCache.lastStudied) return null

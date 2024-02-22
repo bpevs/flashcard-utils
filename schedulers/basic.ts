@@ -9,7 +9,10 @@ type Quality = 0 | 1
 /**
  * A basic scheduler to demonstrate usage
  */
-export default new Scheduler<ScheduleCache, Quality>({
+const basicScheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
+  ScheduleCache,
+  Quality
+>({
   name: 'basic-scheduler',
 
   // Ensure that repetition is an int
@@ -32,3 +35,5 @@ export default new Scheduler<ScheduleCache, Quality>({
     return { repetition: quality ? repetition + 1 : repetition }
   },
 })
+
+export default basicScheduler
