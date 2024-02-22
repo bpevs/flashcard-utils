@@ -1,3 +1,8 @@
+/**
+ * For importing and exporting Flashcards from other formats
+ *
+ * @module
+ */
 export { default as fromJSON } from './from_json.ts'
 export { default as fromOBJ } from './from_obj.ts'
 export { default as fromTSV } from './from_tsv.ts'

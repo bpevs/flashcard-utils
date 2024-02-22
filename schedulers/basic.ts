@@ -1,29 +1,34 @@
-/**
- * Basic scheduler to demonstrate usage
- */
+import { Scheduler } from 'jsr:@flashcard/core@0.0.2'
 
-export const name = 'basic'
-
-export interface S {
+export interface ScheduleCache {
   repetition: number
 }
 
-export function init(s: Partial<S> = {}): S {
-  return { repetition: s.repetition || 0 }
-}
+type Quality = 0 | 1
 
-export function filter({ repetition = 0 }: S): boolean {
-  return repetition < 3
-}
+/**
+ * A basic scheduler to demonstrate usage
+ */
+export default new Scheduler<ScheduleCache, Quality>({
+  name: 'basic-scheduler',
 
-export function sort(sA: S, sB: S): number {
-  init(sA)
-  init(sB)
-  return (sA.repetition - sB.repetition) || (Math.random() - 0.5)
-}
+  // Ensure that repetition is an int
+  init(s = { repetition: 0 }) {
+    return { repetition: s.repetition || 0 }
+  },
 
-export function update({ repetition }: S, quality: 0 | 1): S {
-  return { repetition: quality ? repetition + 1 : repetition }
-}
+  // If answered correctly 3 times, skip it!
+  filter({ repetition = 0 }) {
+    return repetition < 3
+  },
 
-export default { name, init, filter, sort, update }
+  // Sort by least-repeated. If they are the same, then sort randomly!
+  sort(sA, sB): number {
+    return (sA.repetition - sB.repetition) || (Math.random() - 0.5)
+  },
+
+  // If answered correctly, increment the repetition
+  update({ repetition }, quality) {
+    return { repetition: quality ? repetition + 1 : repetition }
+  },
+})

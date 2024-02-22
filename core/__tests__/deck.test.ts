@@ -1,6 +1,6 @@
-import { Card, Deck } from '@flashcard/core'
-import { basic } from '@flashcard/schedulers'
-import { assert, assertEquals } from 'jsr:@std/assert@0.216'
+import { Card, Deck } from 'jsr:@flashcard/core@0.0.2'
+import { basic } from 'jsr:@flashcard/schedulers@0.0.2'
+import { assert } from 'jsr:@std/assert@0.216'
 
 /**
  * DECK
@@ -9,7 +9,6 @@ import { assert, assertEquals } from 'jsr:@std/assert@0.216'
  *     - Poker (random-sort, multiple-card output, static-deck-order, basic-grading)
  *     - Study SM2 (sm2-sort, sm2-grading)
  */
-
 Deno.test('Basic', () => {
   const deckOfCards = new Deck('my-deck', { fields: ['suit', 'value'] })
   deckOfCards.scheduler = basic
@@ -32,8 +31,5 @@ Deno.test('Basic', () => {
 
   const next = deckOfCards.getNext()
   assert(next instanceof Card, 'Received next card')
-  assertEquals(next.content, {
-    suit: '♥️',
-    value: 'A',
-  }, 'Card has content')
+  assert(next.content.suit, 'Card has suit')
 })

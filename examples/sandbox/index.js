@@ -1,6 +1,5 @@
-import { Template } from '@flashcard/core'
-import { Flashcard } from '@flashcard/components'
 import { fromJSON } from '@flashcard/adapters'
+import { Flashcard } from '@flashcard/components'
 import { basic } from '@flashcard/schedulers'
 
 customElements.define('flash-card', Flashcard)
@@ -11,25 +10,23 @@ const buttonsEl = document.getElementById('buttons')
 const correctButtonEl = document.getElementById('correct')
 const incorrectButtonEl = document.getElementById('incorrect')
 
-let currCardEl
+let currCardEl = null
 
 fetch('/data.json').then((resp) => resp.text()).then(function setup(data) {
   const deck = fromJSON(data, { sortField: 'emoji' })
   deck.scheduler = basic
-  deck.addTemplate(
-    new Template('basic', '<h1>{{emoji}}</h1>', '<h1>{{text}}</h1>'),
-  )
+  deck.addTemplate('basic', '<h1>{{emoji}}</h1>', '<h1>{{text}}</h1>')
 
   currCardEl = renderCurrCard(deck)
 
   correctButtonEl.onclick = () => {
-    deck.answerCurrent(1)
+    deck.answerNext(1)
     currCardEl.classList.remove('show')
     buttonsEl.classList.remove('show')
   }
 
   incorrectButtonEl.onclick = () => {
-    deck.answerCurrent(0)
+    deck.answerNext(0)
     currCardEl.classList.remove('show')
     buttonsEl.classList.remove('show')
   }
@@ -39,8 +36,9 @@ function renderCurrCard(deck) {
   const currCard = deck.getCurrent()
   const { cardEl, cardWrapperEl } = addFlashcard(deck)
   if (currCard) {
-    cardEl.setAttribute('question', currCard.renderQuestion())
-    cardEl.setAttribute('answer', currCard.renderAnswer())
+    const { question, answer } = currCard.render()
+    cardEl.setAttribute('question', question)
+    cardEl.setAttribute('answer', answer)
     cardsEl.appendChild(cardWrapperEl)
     setTimeout(() => cardWrapperEl.classList.add('show'), 0)
   } else {

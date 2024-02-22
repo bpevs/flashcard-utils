@@ -40,21 +40,18 @@ export const build = debounce<any>(async function () {
 }, 100)
 
 function debounce<R>(
-  // deno-lint-ignore no-explicit-any
   func: (...args: any[]) => any,
   wait: number,
 ): () => Promise<R> {
-  // deno-lint-ignore no-explicit-any
   const resolves: any[] = []
   let timer: number
 
-  // deno-lint-ignore no-explicit-any
   return function debounced(...args: any[]): Promise<R> {
     return new Promise((resolve) => {
       resolves.push(resolve)
       const later = () => {
         globalThis.clearTimeout(timer)
-        const result = func.apply(this, args)
+        const result = func.apply(null, args)
         while (resolves.length) {
           resolves.shift()(result)
         }

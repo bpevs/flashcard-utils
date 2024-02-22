@@ -1,4 +1,4 @@
-import { Deck } from '@flashcard/core'
+import { Deck } from 'jsr:@flashcard/core@0.0.2'
 import toOBJ from './to_obj.ts'
 
 export default function toTSV(deck: Deck): string {

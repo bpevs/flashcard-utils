@@ -1,11 +1,9 @@
 import Deck from './deck.ts'
-import Note from './note.ts'
+import Note, { NoteContent } from './note.ts'
 import Template from './template.ts'
 
-export interface Scheduling {
-  // deno-lint-ignore no-explicit-any
-  [key: string]: Record<PropertyKey, any>
-}
+// deno-lint-ignore no-explicit-any
+type AnyScheduleCache = Record<PropertyKey, any>
 
 /**
  *  A visual representation of a Note. A card contains no actual data.
@@ -17,13 +15,13 @@ export default class Card {
   id: string
   template: Template
   note: Note
-  scheduling: Scheduling
+  scheduling: { [key: string]: AnyScheduleCache }
 
   constructor(
     id: string,
     note: Note,
     template: Template = new Template('basic', '{{question}}', '{{answer}}'),
-    scheduling: Scheduling = {},
+    scheduling: { [key: string]: AnyScheduleCache } = {},
   ) {
     this.id = id
     this.note = note
@@ -31,11 +29,11 @@ export default class Card {
     this.scheduling = scheduling
   }
 
-  get content() {
+  get content(): NoteContent {
     return this.note.content
   }
 
-  answer(deck: Deck, quality: number): Scheduling | void {
+  answer(deck: Deck, quality: number): AnyScheduleCache | void {
     if (!deck.scheduler) return
     const { name, init, update } = deck.scheduler
     this.scheduling[name] = update(init(this.scheduling[name]), quality)

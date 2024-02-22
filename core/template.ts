@@ -21,7 +21,7 @@ export default class Template {
     question: string,
     answer: string,
     type = TemplateType.ANKI,
-    style = `.card {
+    style: string = `.card {
       font-family: arial;
       font-size: 20px;
       text-align: center;

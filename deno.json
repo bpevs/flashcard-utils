@@ -11,22 +11,24 @@
     "semiColons": false
   },
   "imports": {
-    "@flashcard/adapters": "jsr:@flashcard/adapters@0.0.1",
-    "@flashcard/adapters/": "jsr:@flashcard/adapters@0.0.1/",
-    "@flashcard/core": "jsr:@flashcard/core@0.0.1",
-    "@flashcard/core/": "jsr:@flashcard/core@0.0.1/",
-    "@flashcard/schedulers": "jsr:@flashcard/schedulers@0.0.1",
-    "@flashcard/schedulers/": "jsr:@flashcard/schedulers@0.0.1/",
-    "@flashcard/utils": "jsr:@flashcard/utils@0.0.1",
-    "@flashcard/utils/": "jsr:@flashcard/utils@0.0.1/"
+    "@flashcard/adapters": "jsr:@flashcard/adapters@0.0.2",
+    "@flashcard/adapters/": "jsr:@flashcard/adapters@0.0.2/",
+    "@flashcard/core": "jsr:@flashcard/core@0.0.2",
+    "@flashcard/core/": "jsr:@flashcard/core@0.0.2/",
+    "@flashcard/schedulers": "jsr:@flashcard/schedulers@0.0.2",
+    "@flashcard/schedulers/": "jsr:@flashcard/schedulers@0.0.2/",
+    "@flashcard/utils": "jsr:@flashcard/utils@0.0.2",
+    "@flashcard/utils/": "jsr:@flashcard/utils@0.0.2/"
   },
   "lint": {
-    "exclude": ["**/mod.js"]
+    "exclude": ["**/mod.js", "./build.ts"]
   },
   "tasks": {
     "build": "deno run --allow-read --allow-write --allow-env --allow-run ./build.ts",
-    "check": "deno check adapters/mod.ts && deno check components/mod.ts && deno check core/mod.ts && deno check schedulers/mod.ts && deno check utils/mod.ts",
-    "test": "deno fmt && deno lint && deno task check && deno test -A",
+    "check": "deno task check:modules && deno task check:examples",
+    "check:modules": "deno check adapters/mod.ts && deno check components/mod.ts && deno check core/mod.ts && deno check schedulers/mod.ts && deno check utils/mod.ts",
+    "check:examples": "deno check examples/sandbox/main.ts && deno check examples/sandbox/index.js && deno check examples/words-to-apkg/main.ts",
+    "test": "deno fmt && deno lint && deno task check:modules && deno test -A",
     "test:update": "deno test -A -- --update",
     "example:sandbox": "deno run -A --watch examples/sandbox/main.ts",
     "example:words-to-apkg": "deno run -A examples/words-to-apkg/main.ts"

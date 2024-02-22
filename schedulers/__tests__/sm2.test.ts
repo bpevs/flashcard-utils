@@ -1,12 +1,14 @@
 import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert@0.216'
 import { FakeTime } from 'jsr:@std/testing@0.216/time'
-import { filter, init, S, sort, update } from '../sm2.ts'
+import sm2Scheduler from '../sm2.ts'
+
+const { filter, init, sort, update } = sm2Scheduler
 
 const ms = 1500000000000
 const oneDayMS = 86_400_000
 
 Deno.test('init', () => {
-  const s: S = init({})
+  const s = init({})
   assertEquals(
     init(s),
     { efactor: 2.5, repetition: 0, interval: 0 },
@@ -24,7 +26,7 @@ Deno.test('init', () => {
 
 Deno.test('filter', () => {
   const time = new FakeTime(ms)
-  let s: S = init({})
+  let s = init({})
 
   try {
     assert(filter(s), 'true by default')
@@ -67,7 +69,7 @@ Deno.test('sort', () => {
 Deno.test('update', () => {
   const time = new FakeTime(ms)
   const lastStudied = new Date(ms)
-  let s: S = init({})
+  let s = init({})
 
   try {
     s = update(s, 5)

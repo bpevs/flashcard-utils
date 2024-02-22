@@ -1,17 +1,7 @@
 import Card from './card.ts'
 import Note, { NoteContent } from './note.ts'
 import Template, { TemplateType } from './template.ts'
-
-// deno-lint-ignore no-explicit-any
-type S = Record<PropertyKey, any>
-
-interface Scheduler {
-  name: string
-  init(s: S): S
-  filter(s: S): boolean
-  sort(sA: S, sB: S): number
-  update(s: S, quality: number): S
-}
+import Scheduler from './scheduler.ts'
 
 /**
  * A `Deck` represents a collection of notes.
@@ -25,7 +15,8 @@ export default class Deck {
   watch: string[] = [] // Names of fields that are watched for updates
   notes: Record<string, Note> = {}
   meta: Record<string, string> = {}
-  scheduler?: Scheduler
+  // deno-lint-ignore no-explicit-any
+  scheduler?: Scheduler<any, any>
   templates: Record<string, Template> = {}
 
   constructor(id: string, props: {
@@ -36,7 +27,8 @@ export default class Deck {
     watch?: string[]
     notes?: Record<string, Note>
     meta?: Record<string, string>
-    scheduler?: Scheduler
+    // deno-lint-ignore no-explicit-any
+    scheduler?: Scheduler<any, any>
   }) {
     this.id = id
     this.idNum = props.idNum || encode(id)

@@ -1,8 +1,10 @@
 import { assert, assertEquals, assertNotEquals } from 'jsr:@std/assert@0.216'
-import { filter, init, S, sort, update } from '../basic.ts'
+import basicScheduler from '../basic.ts'
+
+const { init, filter, sort, update } = basicScheduler
 
 Deno.test('init', () => {
-  const s: S = init({})
+  const s = init({})
   assertEquals(init(s).repetition, 0, 'should set default values')
   s.repetition = 2
   assertEquals(
@@ -13,7 +15,7 @@ Deno.test('init', () => {
 })
 
 Deno.test('filter', () => {
-  let s: S = init({})
+  let s = init({})
   assert(filter(s), 'true by default')
   for (let i = 0; i < 5; i++) s = update(s, 1)
   assert(filter(s) === false, 'no longer true if reps > 3')
@@ -32,7 +34,7 @@ Deno.test('sort', () => {
 })
 
 Deno.test('update', () => {
-  let s: S = init({})
+  let s = init({})
 
   s = update(s, 1)
   assertEquals(s.repetition, 1, 'increment rep if success')

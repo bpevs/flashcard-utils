@@ -5,7 +5,6 @@
  *  3. Run text-to-speech on the Spanish field, and add an `Audio` field
  *  4. Export the deck to an Anki `.apkg` file
  */
-import { Template } from '@flashcard/core'
 import { fromTSV, toAPKG as toAPKG } from '@flashcard/adapters'
 import { generateTranslations, generateTTS } from '@flashcard/utils'
 
@@ -25,9 +24,9 @@ const deck = fromTSV(resp, {
   },
 })
 
-deck.addTemplate(new Template('Reading', '{{Spanish}}', '{{Emoji}}{{Audio}}'))
-deck.addTemplate(new Template('Speaking', '{{Emoji}}', '{{Spanish}}{{Audio}}'))
-deck.addTemplate(new Template('Listening', '{{Audio}}', '{{Emoji}}{{Spanish}}'))
+deck.addTemplate('Reading', '{{Spanish}}', '{{Emoji}}{{Audio}}')
+deck.addTemplate('Speaking', '{{Emoji}}', '{{Spanish}}{{Audio}}')
+deck.addTemplate('Listening', '{{Audio}}', '{{Emoji}}{{Spanish}}')
 
 await generateTranslations(deck, 'English', 'Spanish', {
   toLang: locale,
@@ -44,7 +43,7 @@ await generateTTS(deck, {
 })
 
 const media: Array<{ name: string; data: Blob }> = []
-deck.content.fields.push('Audio')
+deck.fields.push('Audio')
 
 await Promise.all(
   Object.values(deck.notes).map(async (note) => {

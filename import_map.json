@@ -1,12 +1,12 @@
 {
   "imports": {
-    "@flashcard/adapters": "jsr:@flashcard/adapters@0.0.1",
-    "@flashcard/adapters/": "jsr:@flashcard/adapters@0.0.1/",
-    "@flashcard/core": "jsr:@flashcard/core@0.0.1",
-    "@flashcard/core/": "jsr:@flashcard/core@0.0.1/",
-    "@flashcard/schedulers": "jsr:@flashcard/schedulers@0.0.1",
-    "@flashcard/schedulers/": "jsr:@flashcard/schedulers@0.0.1/",
-    "@flashcard/utils": "jsr:@flashcard/utils@0.0.1",
-    "@flashcard/utils/": "jsr:@flashcard/utils@0.0.1/"
+    "@flashcard/adapters": "jsr:@flashcard/adapters@0.0.2",
+    "@flashcard/adapters/": "jsr:@flashcard/adapters@0.0.2/",
+    "@flashcard/core": "jsr:@flashcard/core@0.0.2",
+    "@flashcard/core/": "jsr:@flashcard/core@0.0.2/",
+    "@flashcard/schedulers": "jsr:@flashcard/schedulers@0.0.2",
+    "@flashcard/schedulers/": "jsr:@flashcard/schedulers@0.0.2/",
+    "@flashcard/utils": "jsr:@flashcard/utils@0.0.2",
+    "@flashcard/utils/": "jsr:@flashcard/utils@0.0.2/"
   }
 }
