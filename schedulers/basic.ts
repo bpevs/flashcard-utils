@@ -16,7 +16,7 @@ const basicScheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
   name: 'basic-scheduler',
 
   // Ensure that repetition is an int
-  init(s:ScheduleCache = { repetition: 0 }) {
+  init(s: ScheduleCache = { repetition: 0 }) {
     return { repetition: s.repetition || 0 }
   },
 

@@ -1,5 +1,5 @@
 // To a Uint8Array that can be written to a .apkg file
-import { Deck } from 'jsr:@flashcard/core@0.0.3'
+import { Deck, Note, Template } from 'jsr:@flashcard/core@0.0.3'
 import { crypto } from 'jsr:@std/crypto@0.216'
 import initSqlJs from 'npm:sql.js@1.10.2'
 import JSZip from 'npm:jszip@3.10.1'
@@ -106,7 +106,7 @@ async function writeToArray(
 ) {
   const { id, fields = [], watch = [] } = deck
   const sortFieldIndex = Math.max(sortField ? fields.indexOf(sortField) : 0, 0)
-  const fieldNames = fields.map((name) => ({ name }))
+  const fieldNames = fields.map((name: string) => ({ name }))
   fieldNames.unshift(fieldNames.splice(sortFieldIndex, 1)[0])
 
   const guidComponentNames = (watch.length) ? watch : fields
@@ -150,7 +150,10 @@ async function writeToArray(
         type: 0,
         usn: 0,
         vers: [],
-        req: deck.getTemplates().map((_, index) => [index, 'all', [0]]),
+        req: deck.getTemplates().map((
+          _: Template,
+          index: number,
+        ) => [index, 'all', [0]]),
         flds: (fieldNames || [])
           .map((field: Partial<AnkiField>, ord: number): AnkiField => ({
             name: field.name || '',
@@ -162,7 +165,7 @@ async function writeToArray(
             media: field.media || [],
           })),
         tmpls: deck.getTemplates()
-          .map((template) => ({
+          .map((template: Template) => ({
             name: template.id,
             qfmt: template.question,
             afmt: template.answer,
@@ -179,11 +182,13 @@ async function writeToArray(
           })),
         mod: new Date().getTime() || 0,
       },
-      fields: fieldNames.map(({ name }) => String(note.content[name])),
+      fields: fieldNames.map(({ name }: { name: string }) =>
+        String((note as Note).content[name])
+      ),
       tags: [],
       guid: ankiHash(
         [id].concat(guidComponentNames
-          .map((field) => String(note.content[field]))),
+          .map((field: string) => String((note as Note).content[field]))),
       ),
     })),
   }]

@@ -32,7 +32,9 @@ export default async function generateTranslations(
     options.apiKey,
     options.apiRegion,
   )
-  notes.forEach((note: Note, index) => note.content[toField] = translated[index])
+  notes.forEach((note: Note, index) =>
+    note.content[toField] = translated[index]
+  )
   deck.fields = deck.fields
     .filter((field: string) => field !== toField)
     .concat([toField])

@@ -29,11 +29,12 @@ const sm2Scheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
    * 2. Ensures that EF starts at 2.5
    */
   init(
-    { efactor = EF, repetition = REPETITION, interval = INTERVAL }: ScheduleCache = {
-      efactor: EF,
-      repetition: REPETITION,
-      interval: INTERVAL,
-    },
+    { efactor = EF, repetition = REPETITION, interval = INTERVAL }:
+      ScheduleCache = {
+        efactor: EF,
+        repetition: REPETITION,
+        interval: INTERVAL,
+      },
   ) {
     return { efactor, repetition, interval }
   },
