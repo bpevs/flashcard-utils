@@ -1,11 +1,12 @@
 {
   "name": "@flashcard/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "exports": {
     ".": "./mod.ts",
     "./card": "./card.ts",
     "./deck": "./deck.ts",
     "./note": "./note.ts",
+    "./scheduler": "./scheduler.ts",
     "./template": "./template.ts"
   }
 }

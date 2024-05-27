@@ -1,7 +1,7 @@
 export const snapshot = {};
 
 snapshot[`init Deck to/from TSV 1`] = `
-[32m"category	emoji	text	pinyin	sound
+"category	emoji	text	pinyin	sound
 animal	🐈	猫	māo	[sound:zh-cn_猫.mp3]
 animal	🐶	狗	gǒu	[sound:zh-cn_狗.mp3]
 body	🦶	脚	jiǎo	[sound:zh-cn_脚.mp3]
@@ -13,5 +13,5 @@ number	8️⃣	八	bā	[sound:zh-cn_八.mp3]
 number	9️⃣	九	jiǔ	[sound:zh-cn_九.mp3]
 transportation	🚗	汽车	qì chē	[sound:zh-cn_汽车.mp3]
 verbs	❤️😍	爱	ài	[sound:zh-cn_爱.mp3]
-"[39m
+"
 `;

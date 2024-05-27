@@ -20,15 +20,17 @@ fetch('/data.json').then((resp) => resp.text()).then(function setup(data) {
   currCardEl = renderCurrCard(deck)
 
   correctButtonEl.onclick = () => {
-    deck.answerNext(1)
+    deck.answerCurrent(1)
     currCardEl.classList.remove('show')
     buttonsEl.classList.remove('show')
+    deck.getNext()
   }
 
   incorrectButtonEl.onclick = () => {
-    deck.answerNext(0)
+    deck.answerCurrent(0)
     currCardEl.classList.remove('show')
     buttonsEl.classList.remove('show')
+    deck.getNext()
   }
 })
 

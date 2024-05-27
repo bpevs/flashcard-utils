@@ -1,4 +1,4 @@
-import { Deck, NoteContent } from 'jsr:@flashcard/core@0.0.2'
+import { Deck, NoteContent } from 'jsr:@flashcard/core@0.0.3'
 import type { ExportObj } from './types.ts'
 
 export default function fromOBJ(

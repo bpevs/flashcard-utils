@@ -1,5 +1,5 @@
 import Card from './card.ts'
-import Template, { TemplateType } from './template.ts'
+import Template from './template.ts'
 
 export type NoteContent = Record<string, string | number>
 
@@ -9,40 +9,33 @@ export type NoteContent = Record<string, string | number>
  */
 export default class Note {
   id: string
-  templates: Record<string, Template> = {}
+  templates: Template[] = []
   content: NoteContent
-  _cards: Map<Template, Card>
+  _cards: Card[] = []
 
   constructor(id: string, content: NoteContent, templates?: Template[]) {
     this.id = id
     this.content = content
-    this._cards = new Map()
-    if (templates) templates.forEach((t) => this.templates[t.id] = t)
+    this._cards = []
+    if (templates) this.templates = templates
   }
 
-  addTemplate(
-    id: string,
-    q: string,
-    a: string,
-    type?: TemplateType,
-    style?: string,
-  ): void {
-    this.templates[id] = new Template(id, q, a, type, style)
-    if (Object.keys(this.templates).length > this._cards.size) {
-      Object.values(this.templates).forEach((template) => {
-        if (!this._cards.get(template)) {
-          const card = new Card(this.id + template.id, this, template)
-          this._cards.set(template, card)
-        }
+  getCards(templates: Record<string, Template> = {}): Card[] {
+    const prevTemplatesLen = this.templates.length
+    const newTemplatesLen = Object.keys(templates).length
+    const cardsLength = this._cards.length
+    if (newTemplatesLen && (newTemplatesLen !== prevTemplatesLen)) {
+      this.templates = []
+      Object.keys(templates).forEach((name) => {
+        this.templates.push(templates[name])
       })
     }
-  }
 
-  getCards(templates?: Record<string, Template>): Card[] {
-    return Array.from(this._cards, ([_template, card]) => card)
-      .concat(
-        Object.values(templates || {})
-          .map((template) => new Card(this.id + template.id, this, template)),
-      )
+    if (cardsLength !== this.templates.length) {
+      this._cards = (this.templates || [])
+        .map((template) => new Card(this.id + template.id, this, template))
+    }
+
+    return this._cards
   }
 }

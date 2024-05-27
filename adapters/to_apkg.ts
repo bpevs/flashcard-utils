@@ -1,5 +1,5 @@
 // To a Uint8Array that can be written to a .apkg file
-import { Deck } from 'jsr:@flashcard/core@0.0.2'
+import { Deck } from 'jsr:@flashcard/core@0.0.3'
 import { crypto } from 'jsr:@std/crypto@0.216'
 import initSqlJs from 'npm:sql.js@1.10.2'
 import JSZip from 'npm:jszip@3.10.1'

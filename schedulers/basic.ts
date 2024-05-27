@@ -1,4 +1,4 @@
-import { Scheduler } from 'jsr:@flashcard/core@0.0.2'
+import { Scheduler } from 'jsr:@flashcard/core@0.0.3'
 
 export interface ScheduleCache {
   repetition: number

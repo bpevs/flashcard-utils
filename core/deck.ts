@@ -18,6 +18,7 @@ export default class Deck {
   // deno-lint-ignore no-explicit-any
   scheduler?: Scheduler<any, any>
   templates: Record<string, Template> = {}
+  currCard?: Card
 
   constructor(id: string, props: {
     idNum?: number
@@ -73,12 +74,16 @@ export default class Deck {
     return Object.values(this.notes)
       .map((note) => note.getCards(this.templates))
       .flat()
-      .toSorted((cardA: Card, cardB: Card) =>
-        sort(
+      .toSorted((cardA: Card, cardB: Card) => {
+        return sort(
           init(cardA.scheduling[name]),
           init(cardB.scheduling[name]),
         )
-      )
+      })
+  }
+
+  getCurrent(): Card | void {
+    return this.currCard
   }
 
   getNext(numCards = 1): Card[] | Card | void {
@@ -87,7 +92,9 @@ export default class Deck {
     const cards = this.getCards().filter((card: Card) => {
       return filter(init(card.scheduling[name]))
     }).slice(0, numCards)
-    return numCards > 1 ? cards : cards[0]
+    this.currCard = cards[0]
+    const next = numCards > 1 ? cards : this.currCard
+    return next
   }
 
   getNotes(): Note[] {
@@ -96,6 +103,11 @@ export default class Deck {
 
   getTemplates(): Template[] {
     return Object.values(this.templates) || []
+  }
+
+  answerCurrent(quality: number): void {
+    const currCard = this.getCurrent()
+    if (currCard instanceof Card) currCard.answer(this, quality)
   }
 
   answerNext(quality: number): void {

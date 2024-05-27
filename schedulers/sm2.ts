@@ -3,7 +3,7 @@
  * @reference https://www.supermemo.com/en/blog/application-of-a-computer-to-improve-the-results-obtained-in-working-with-the-supermemo-method
  * @reference https://super-memory.com/english/ol/sm2.htm
  */
-import { Scheduler } from 'jsr:@flashcard/core@0.0.2'
+import { Scheduler } from 'jsr:@flashcard/core@0.0.3'
 
 type Quality = 0 | 1 | 2 | 3 | 4 | 5
 
@@ -57,7 +57,7 @@ const sm2Scheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
     if (!bDue && aDue) return 1
     if (!aDue || !bDue) return (Math.random() - 0.5)
     if (sameDay(aDue, bDue)) return (Math.random() - 0.5)
-    return (aDue.getDate() - bDue.getDate())
+    return (aDue.getTime() - bDue.getTime())
   },
 
   /**
