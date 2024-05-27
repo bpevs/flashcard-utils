@@ -1,4 +1,4 @@
-import { Deck } from 'jsr:@flashcard/core@0.0.3'
+import { Deck, Note } from 'jsr:@flashcard/core@0.0.3'
 
 export enum API {
   DEEPL = 0,
@@ -23,7 +23,7 @@ export default async function generateTranslations(
   options: Options,
 ): Promise<Deck> {
   const notes = Object.values(deck.notes)
-  const texts = notes.map((note) => String(note.content[fromField]))
+  const texts = notes.map((note: Note) => String(note.content[fromField]))
   const translated = await translateTexts(
     texts,
     options.fromLang || 'en',
@@ -32,9 +32,9 @@ export default async function generateTranslations(
     options.apiKey,
     options.apiRegion,
   )
-  notes.forEach((note, index) => note.content[toField] = translated[index])
+  notes.forEach((note: Note, index) => note.content[toField] = translated[index])
   deck.fields = deck.fields
-    .filter((field) => field !== toField)
+    .filter((field: string) => field !== toField)
     .concat([toField])
   return deck
 }
