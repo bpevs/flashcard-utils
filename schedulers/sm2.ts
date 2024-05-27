@@ -29,7 +29,7 @@ const sm2Scheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
    * 2. Ensures that EF starts at 2.5
    */
   init(
-    { efactor = EF, repetition = REPETITION, interval = INTERVAL } = {
+    { efactor = EF, repetition = REPETITION, interval = INTERVAL }: ScheduleCache = {
       efactor: EF,
       repetition: REPETITION,
       interval: INTERVAL,
@@ -42,7 +42,7 @@ const sm2Scheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
    * Only show cards that have a due date today, or in the past
    * After each repetition session of a given day repeat again all items that scored below four
    */
-  filter(scheduleCache) {
+  filter(scheduleCache: ScheduleCache) {
     const due = getDueDate(scheduleCache)
     return !due || (due <= new Date())
   },
@@ -50,7 +50,7 @@ const sm2Scheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
   /**
    * Sort by lastStudied. If they are the same day, sort randomly
    */
-  sort(sA, sB) {
+  sort(sA: ScheduleCache, sB: ScheduleCache) {
     const aDue = getDueDate(sA)
     const bDue = getDueDate(sB)
     if (!aDue && bDue) return -1
@@ -75,7 +75,7 @@ const sm2Scheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
     repetition: prevRepetition,
     interval: prevInterval,
     lastStudied: prevLastStudied,
-  }, quality) {
+  }: ScheduleCache, quality: Quality) {
     const efactorModifier = 0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)
     const efactor = Math.max(1.3, prevEfactor + efactorModifier)
     const lastStudied = new Date()

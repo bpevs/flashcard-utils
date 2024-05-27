@@ -16,22 +16,22 @@ const basicScheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
   name: 'basic-scheduler',
 
   // Ensure that repetition is an int
-  init(s = { repetition: 0 }) {
+  init(s:ScheduleCache = { repetition: 0 }) {
     return { repetition: s.repetition || 0 }
   },
 
   // If answered correctly 3 times, skip it!
-  filter({ repetition = 0 }) {
+  filter({ repetition = 0 }: ScheduleCache) {
     return repetition < 3
   },
 
   // Sort by least-repeated. If they are the same, then sort randomly!
-  sort(sA, sB): number {
+  sort(sA: ScheduleCache, sB: Scheduler): number {
     return (sA.repetition - sB.repetition) || (Math.random() - 0.5)
   },
 
   // If answered correctly, increment the repetition
-  update({ repetition }, quality) {
+  update({ repetition }: ScheduleCache, quality: Quality) {
     return { repetition: quality ? repetition + 1 : repetition }
   },
 })
