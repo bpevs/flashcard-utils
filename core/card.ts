@@ -1,5 +1,6 @@
-import Deck from './deck.ts'
-import Note, { NoteContent } from './note.ts'
+import type Deck from './deck.ts'
+import type Note from './note.ts'
+import type { NoteContent } from './note.ts'
 import Template from './template.ts'
 
 // deno-lint-ignore no-explicit-any

@@ -1,11 +1,8 @@
 {
   "name": "@flashcard/components",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "exports": {
     ".": "./mod.ts",
     "./flashcard": "./flashcard.ts"
-  },
-  "compilerOptions": {
-    "lib": ["es2023", "dom"]
   }
 }

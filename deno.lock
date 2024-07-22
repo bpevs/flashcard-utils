@@ -421,12 +421,11 @@
     "https://deno.land/x/hono@v4.0.1/validator/validator.ts": "1a7b524292662e5219fd61a9872c2586aa23a2328800211a8fdc268b089f75f1"
   },
   "workspace": {
-    "members": {
-      "@flashcard/adapters": {},
-      "@flashcard/components": {},
-      "@flashcard/core": {},
-      "@flashcard/schedulers": {},
-      "@flashcard/utils": {}
-    }
+    "dependencies": [
+      "jsr:@flashcard/adapters@0.0.4",
+      "jsr:@flashcard/core@0.0.4",
+      "jsr:@flashcard/schedulers@0.0.4",
+      "jsr:@flashcard/utils@0.0.4"
+    ]
   }
 }

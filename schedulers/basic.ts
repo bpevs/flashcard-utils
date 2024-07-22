@@ -1,4 +1,4 @@
-import { Scheduler } from 'jsr:@flashcard/core@0.0.3'
+import { Scheduler } from '@flashcard/core'
 
 export interface ScheduleCache {
   repetition: number
@@ -26,7 +26,7 @@ const basicScheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
   },
 
   // Sort by least-repeated. If they are the same, then sort randomly!
-  sort(sA: ScheduleCache, sB: Scheduler): number {
+  sort(sA: ScheduleCache, sB: ScheduleCache): number {
     return (sA.repetition - sB.repetition) || (Math.random() - 0.5)
   },
 

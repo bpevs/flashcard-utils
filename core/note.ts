@@ -1,5 +1,5 @@
 import Card from './card.ts'
-import Template from './template.ts'
+import type Template from './template.ts'
 
 export type NoteContent = Record<string, string | number>
 

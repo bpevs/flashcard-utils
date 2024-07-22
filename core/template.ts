@@ -1,4 +1,4 @@
-import { NoteContent } from './note.ts'
+import type { NoteContent } from './note.ts'
 
 /**
  * Template that describes how cards are displayed.

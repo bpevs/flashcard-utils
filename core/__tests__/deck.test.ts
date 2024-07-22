@@ -1,5 +1,5 @@
-import { Card, Deck } from 'jsr:@flashcard/core@0.0.3'
-import { basic } from 'jsr:@flashcard/schedulers@0.0.3'
+import { Card, Deck } from '@flashcard/core'
+import { basic } from '@flashcard/schedulers'
 import { assert } from 'jsr:@std/assert@0.216'
 
 /**

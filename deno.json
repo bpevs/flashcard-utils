@@ -10,6 +10,12 @@
     "singleQuote": true,
     "semiColons": false
   },
+  "imports": {
+    "@flashcard/adapters": "jsr:@flashcard/adapters@0.0.4",
+    "@flashcard/core": "jsr:@flashcard/core@0.0.4",
+    "@flashcard/schedulers": "jsr:@flashcard/schedulers@0.0.4",
+    "@flashcard/utils": "jsr:@flashcard/utils@0.0.4"
+  },
   "lint": {
     "exclude": ["**/mod.js", "./build.ts"]
   },
@@ -18,12 +24,12 @@
     "check": "deno task check:modules && deno task check:examples",
     "check:modules": "deno check adapters/mod.ts && deno check components/mod.ts && deno check core/mod.ts && deno check schedulers/mod.ts && deno check utils/mod.ts",
     "check:examples": "deno check examples/sandbox/main.ts && deno check examples/sandbox/index.js && deno check examples/words-to-apkg/main.ts",
-    "test": "deno fmt && deno lint && deno task check:modules && deno test -A",
+    "test": "deno fmt && deno lint && deno task check:modules && deno test -A && deno publish --dry-run",
     "test:update": "deno test -A -- --update",
     "example:sandbox": "deno run -A --watch examples/sandbox/main.ts",
     "example:words-to-apkg": "deno run -A examples/words-to-apkg/main.ts"
   },
-  "workspaces": [
+  "workspace": [
     "./adapters",
     "./components",
     "./core",

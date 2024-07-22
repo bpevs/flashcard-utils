@@ -1,7 +1,7 @@
 import Card from './card.ts'
-import Note, { NoteContent } from './note.ts'
-import Template, { TemplateType } from './template.ts'
-import Scheduler from './scheduler.ts'
+import Note, { type NoteContent } from './note.ts'
+import Template, { type TemplateType } from './template.ts'
+import type Scheduler from './scheduler.ts'
 
 /**
  * A `Deck` represents a collection of notes.
