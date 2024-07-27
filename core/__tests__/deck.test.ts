@@ -29,7 +29,7 @@ Deno.test('Basic', () => {
     }
   })
 
-  const next = deckOfCards.getNext()
+  const next = deckOfCards.getNext(1)[0]
   assert(next instanceof Card, 'Received next card')
   assert(next.content.suit, 'Card has suit')
 })

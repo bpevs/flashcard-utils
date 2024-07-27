@@ -30,7 +30,7 @@ export default class Deck {
     meta?: Record<string, string>
     // deno-lint-ignore no-explicit-any
     scheduler?: Scheduler<any, any>
-  }) {
+  } = {}) {
     this.id = id
     this.idNum = props.idNum || encode(id)
     if (props.name) this.name = props.name
@@ -42,7 +42,7 @@ export default class Deck {
     if (props.meta) this.meta = props.meta
   }
 
-  addNote(id: string, content: NoteContent, templates?: Template[]): void {
+  addNote(id: string, content: NoteContent, templates?: Template[]): Note {
     const note = new Note(id, content, templates)
     const deckFields = this.fields
     const noteFields = Object.keys(note.content)
@@ -56,6 +56,7 @@ export default class Deck {
     }
 
     this.notes[note.id] = note
+    return note
   }
 
   addTemplate(
@@ -86,15 +87,14 @@ export default class Deck {
     return this.currCard
   }
 
-  getNext(numCards = 1): Card[] | Card | void {
-    if (!this.scheduler) return
+  getNext(numCards = 0): Card[] {
+    if (!this.scheduler) return []
     const { init, filter, name } = this.scheduler
     const cards = this.getCards().filter((card: Card) => {
       return filter(init(card.scheduling[name]))
-    }).slice(0, numCards)
+    })
     this.currCard = cards[0]
-    const next = numCards > 1 ? cards : this.currCard
-    return next
+    return (numCards > 0) ? cards.slice(0, numCards) : cards
   }
 
   getNotes(): Note[] {

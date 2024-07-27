@@ -40,10 +40,10 @@ Deno.test('update', () => {
   assertEquals(s.repetition, 1, 'increment rep if success')
 
   s = update(s, 0)
-  assertEquals(s.repetition, 1, 'nothing happens if failure')
+  assertEquals(s.repetition, 0, 'decrement on failure')
 
   s = update(s, 1)
-  assertEquals(s.repetition, 2, 'increment rep if success')
+  assertEquals(s.repetition, 1, 'increment rep if success')
   s = update(s, 1)
-  assertEquals(s.repetition, 3, 'increment rep if success')
+  assertEquals(s.repetition, 2, 'increment rep if success')
 })

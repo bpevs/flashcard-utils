@@ -31,8 +31,10 @@ const basicScheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
   },
 
   // If answered correctly, increment the repetition
+  // If answered incorrectly, decrement the repetition
   update({ repetition }: ScheduleCache, quality: Quality) {
-    return { repetition: quality ? repetition + 1 : repetition }
+    if (quality) return { repetition: repetition + 1 }
+    else return { repetition: Math.max(repetition - 1, 0) }
   },
 })
 
