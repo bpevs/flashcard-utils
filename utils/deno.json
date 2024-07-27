@@ -1,9 +1,0 @@
-{
-  "name": "@flashcard/utils",
-  "version": "0.0.4",
-  "exports": {
-    ".": "./mod.ts",
-    "./generate_translations": "./generate_translations.ts",
-    "./generate_tts": "./generate_tts.ts"
-  }
-}

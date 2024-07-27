@@ -1,25 +1,18 @@
-import fromJSON from '../from_json.ts'
-import toAPKG from '../to_apkg.ts'
-import deckData from './__data__/zh_CN.ts'
+import { toApkg } from '../apkg.ts'
+import { cardData } from './__data__/zh_CN.ts'
+import Deck from '../../core/deck.ts'
+import basic from '../../schedulers/basic.ts'
 
 Deno.test('write deck to APKG', async () => {
-  const deck = fromJSON(JSON.stringify(deckData), { sortField: 'emoji' })
-  deck.addTemplate(
-    'reading',
-    '<h1>{{emoji}}</h1>',
-    '{{FrontSide}}\n{{text}}{{sound}}',
-  )
-  deck.addTemplate(
-    'speaking',
-    '<h1>{{Text}}</h1>',
-    '{{FrontSide}}\n{{emoji}}{{sound}}',
-  )
+  // deno-lint-ignore no-explicit-any
+  const deck = new Deck<any, any, any>(basic)
+  cardData.forEach(([category, emoji, text, pinyin, sound]) => {
+    deck.addCard(emoji, { category, emoji, text, pinyin, sound })
+  })
 
   const media = []
   const path = './adapters/__tests__/__data__/audio'
-  for await (
-    const file of Deno.readDir(path)
-  ) {
+  for await (const file of Deno.readDir(path)) {
     const bytes = await Deno.readFile(path + '/' + file.name)
     const blob = new Blob([bytes], { type: 'audio/mpeg' })
     media.push({ name: file.name, data: blob })
@@ -27,6 +20,25 @@ Deno.test('write deck to APKG', async () => {
 
   await Deno.writeFile(
     './test.apkg',
-    await toAPKG(deck, { sortField: 'emoji', media }),
+    await toApkg(deck, {
+      id: 1231241342,
+      name: 'name',
+      desc: 'desc',
+      fields: ['category', 'emoji', 'text', 'pinyin', 'sound'],
+      sortField: 'emoji',
+      media,
+      templates: [
+        {
+          name: 'reading',
+          qfmt: '<h1>{{emoji}}</h1>',
+          afmt: '{{FrontSide}}\n{{text}}{{sound}}',
+        },
+        {
+          name: 'speaking',
+          qfmt: '<h1>{{text}}</h1>',
+          afmt: '{{FrontSide}}\n{{emoji}}{{sound}}',
+        },
+      ],
+    }),
   )
 })

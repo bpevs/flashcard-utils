@@ -1,19 +1,18 @@
-// adeno-lint-ignore no-explicit-any
-// export type ScheduleCache = Record<PropertyKey, any>
+type Params = Record<PropertyKey, string | number | boolean>
 
 export default class Scheduler<ScheduleCache, Quality> {
-  name: string
+  params: Params = {}
 
-  constructor({ name, init, filter, sort, update }: {
-    name: string
+  constructor({ init, filter, params, sort, update }: {
     init?: (s: ScheduleCache) => ScheduleCache
     filter?: (_s: ScheduleCache) => boolean
+    params?: Params
     sort?: (_sA: ScheduleCache, _sB: ScheduleCache) => number
     update?: (s: ScheduleCache, quality: Quality) => ScheduleCache
   }) {
-    this.name = name
     if (init) this.init = init
     if (filter) this.filter = filter
+    if (params) this.params = params
     if (sort) this.sort = sort
     if (update) this.update = update
   }

@@ -3,9 +3,9 @@
  * @reference https://www.supermemo.com/en/blog/application-of-a-computer-to-improve-the-results-obtained-in-working-with-the-supermemo-method
  * @reference https://super-memory.com/english/ol/sm2.htm
  */
-import { Scheduler } from '@flashcard/core'
+import Scheduler from '../core/scheduler.ts'
 
-type Quality = 0 | 1 | 2 | 3 | 4 | 5
+export type Quality = 0 | 1 | 2 | 3 | 4 | 5
 
 export interface ScheduleCache {
   interval: number
@@ -22,8 +22,6 @@ const sm2Scheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
   ScheduleCache,
   Quality
 >({
-  name: 'sm2',
-
   /**
    * 1. Ensures repetition and interval start at 0.
    * 2. Ensures that EF starts at 2.5

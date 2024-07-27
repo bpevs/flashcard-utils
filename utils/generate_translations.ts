@@ -1,4 +1,4 @@
-import type { Deck, Note } from '@flashcard/core'
+import type { Card, Deck } from '../core/mod.ts'
 
 export enum API {
   DEEPL = 0,
@@ -17,13 +17,18 @@ export interface Options {
 }
 
 export default async function generateTranslations(
-  deck: Deck,
+  // deno-lint-ignore no-explicit-any
+  deck: Deck<any, any, any>,
   fromField: string,
   toField: string,
   options: Options,
-): Promise<Deck> {
-  const notes = Object.values(deck.notes)
-  const texts = notes.map((note: Note) => String(note.content[fromField]))
+  // deno-lint-ignore no-explicit-any
+): Promise<Deck<any, any, any>> {
+  const cards = deck.cards
+  // deno-lint-ignore no-explicit-any
+  const texts = cards.map((card: Card<any, any, any>) =>
+    String(card.content[fromField])
+  )
   const translated = await translateTexts(
     texts,
     options.fromLang || 'en',
@@ -32,12 +37,12 @@ export default async function generateTranslations(
     options.apiKey,
     options.apiRegion,
   )
-  notes.forEach((note: Note, index) =>
-    note.content[toField] = translated[index]
+
+  // deno-lint-ignore no-explicit-any
+  cards.forEach((card: Card<any, any, any>, index) =>
+    card.content[toField] = translated[index]
   )
-  deck.fields = deck.fields
-    .filter((field: string) => field !== toField)
-    .concat([toField])
+
   return deck
 }
 

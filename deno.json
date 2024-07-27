@@ -1,9 +1,14 @@
 {
-  "compilerOptions": {
-    "strict": true,
-    "useUnknownInCatchVariables": true,
-    "noImplicitOverride": true,
-    "lib": ["deno.window", "dom", "es2023"]
+  "name": "@bpev/flashcards",
+  "version": "1.0.0-beta.0",
+  "exports": {
+    ".": "./core/mod.ts",
+    "./adapters/apkg": "./adapters/apkg.ts",
+    "./adapters/array": "./adapters/array.ts",
+    "./adapters/tsv": "./adapters/tsv.ts",
+    "./schedulers/basic": "./schedulers/basic.ts",
+    "./schedulers/sm2": "./schedulers/sm2.ts",
+    "./utils": "./utils/mod.ts"
   },
   "fmt": {
     "proseWrap": "never",
@@ -11,29 +16,22 @@
     "semiColons": false
   },
   "imports": {
-    "@flashcard/adapters": "jsr:@flashcard/adapters@0.0.4",
-    "@flashcard/core": "jsr:@flashcard/core@0.0.4",
-    "@flashcard/schedulers": "jsr:@flashcard/schedulers@0.0.4",
-    "@flashcard/utils": "jsr:@flashcard/utils@0.0.4"
-  },
-  "lint": {
-    "exclude": ["**/mod.js", "./build.ts"]
+    "@std/assert": "jsr:@std/assert@^1.0.1",
+    "@std/crypto": "jsr:@std/crypto@^1.0.2",
+    "@std/fs": "jsr:@std/fs@^1.0.0",
+    "@std/io": "jsr:@std/io@^0.224.3",
+    "@std/path": "jsr:@std/path@^1.0.2",
+    "@std/testing": "jsr:@std/testing@^0.225.3",
+    "jszip": "npm:jszip@^3.10.1",
+    "sql.js": "npm:sql.js@^1.10.3"
   },
   "tasks": {
     "build": "deno run --allow-read --allow-write --allow-env --allow-run ./build.ts",
     "check": "deno task check:modules && deno task check:examples",
-    "check:modules": "deno check adapters/mod.ts && deno check components/mod.ts && deno check core/mod.ts && deno check schedulers/mod.ts && deno check utils/mod.ts",
     "check:examples": "deno check examples/sandbox/main.ts && deno check examples/sandbox/index.js && deno check examples/words-to-apkg/main.ts",
-    "test": "deno fmt && deno lint && deno task check:modules && deno test -A && deno publish --dry-run",
+    "test": "deno fmt && deno lint && deno test -A && deno publish --dry-run --allow-dirty",
     "test:update": "deno test -A -- --update",
     "example:sandbox": "deno run -A --watch examples/sandbox/main.ts",
     "example:words-to-apkg": "deno run -A examples/words-to-apkg/main.ts"
-  },
-  "workspace": [
-    "./adapters",
-    "./components",
-    "./core",
-    "./schedulers",
-    "./utils"
-  ]
+  }
 }

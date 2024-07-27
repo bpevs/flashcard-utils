@@ -1,47 +1,22 @@
-import type Deck from './deck.ts'
-import type Note from './note.ts'
-import type { NoteContent } from './note.ts'
-import Template from './template.ts'
+import type Scheduler from './scheduler.ts'
 
-// deno-lint-ignore no-explicit-any
-type AnyScheduleCache = Record<PropertyKey, any>
-
-/**
- *  A visual representation of a Note. A card contains no actual data.
- *  Instead, it contains:
- *   1. A template, showing how to display a Note's data
- *   2. Scheduling information, used by various algorithms
- */
-export default class Card {
+export default class Card<Content, ScheduleCache, Quality> {
   id: string
-  template: Template
-  note: Note
-  scheduling: { [key: string]: AnyScheduleCache }
+  content: Content
+  scheduling: ScheduleCache
 
-  constructor(
-    id: string,
-    note: Note,
-    template: Template = new Template('basic', '{{question}}', '{{answer}}'),
-    scheduling: { [key: string]: AnyScheduleCache } = {},
-  ) {
+  constructor(id: string, content: Content, scheduling: ScheduleCache) {
     this.id = id
-    this.note = note
-    this.template = template
+    this.content = content
     this.scheduling = scheduling
   }
 
-  get content(): NoteContent {
-    return this.note.content
-  }
-
-  answer(deck: Deck, quality: number): AnyScheduleCache | void {
-    if (!deck.scheduler) return
-    const { name, init, update } = deck.scheduler
-    this.scheduling[name] = update(init(this.scheduling[name]), quality)
-    return this.scheduling[name]
-  }
-
-  render(): { question: string; answer: string } {
-    return this.template.render(this.note.content)
+  answer(
+    scheduler: Scheduler<ScheduleCache, Quality>,
+    quality: Quality,
+  ): ScheduleCache {
+    const { init, update } = scheduler
+    this.scheduling = update(init(this.scheduling), quality)
+    return this.scheduling
   }
 }

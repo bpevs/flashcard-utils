@@ -1,10 +1,10 @@
-import { Scheduler } from '@flashcard/core'
+import Scheduler from '../core/scheduler.ts'
 
 export interface ScheduleCache {
   repetition: number
 }
 
-type Quality = 0 | 1
+export type Quality = 0 | 1
 
 /**
  * A basic scheduler to demonstrate usage
@@ -13,8 +13,6 @@ const basicScheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
   ScheduleCache,
   Quality
 >({
-  name: 'basic-scheduler',
-
   // Ensure that repetition is an int
   init(s: ScheduleCache = { repetition: 0 }) {
     return { repetition: s.repetition || 0 }

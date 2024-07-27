@@ -1,16 +1,36 @@
 // To a Uint8Array that can be written to a .apkg file
-import type { Deck, Note, Template } from '@flashcard/core'
-import { crypto } from 'jsr:@std/crypto@0.216'
-import initSqlJs from 'npm:sql.js@1.10.2'
-import JSZip from 'npm:jszip@3.10.1'
+import { crypto } from '@std/crypto'
+import JSZip from 'jszip'
+import initSqlJs from 'sql.js'
+import type { Card, Deck } from '../core/mod.ts'
 
-type Media = Array<{ name: string; data: Blob }>
+export type Media = Array<{ name: string; data: Blob }>
 
-export default function toAPKG(
-  deck: Deck,
-  options: { sortField?: string; media?: Media } = {},
+export function toApkg(
+  // deno-lint-ignore no-explicit-any
+  deck: Deck<any, any, any>,
+  options: {
+    id: number
+    name: string
+    desc: string
+    fields: string[]
+    templates: Template[]
+    watch?: string[]
+    sortField?: string
+    media?: Media
+  },
 ): Promise<Uint8Array> {
-  return writeToArray(deck, options.sortField, options.media)
+  return writeToArray(
+    deck,
+    options.id,
+    options.name,
+    options.desc,
+    options.fields,
+    options.watch,
+    options.templates,
+    options.sortField,
+    options.media,
+  )
 }
 
 /**
@@ -44,7 +64,7 @@ interface DeckProps {
   extendRev: number
 }
 
-interface AnkiTemplate {
+export interface Template {
   name: string
   qfmt: string // question template
   afmt: string // answer template
@@ -54,7 +74,7 @@ interface AnkiTemplate {
   bafmt?: string
 }
 
-interface AnkiField {
+interface Field {
   name: string
   ord?: number | null
   sticky?: boolean
@@ -77,8 +97,8 @@ interface Model {
   css: string
   tags: string[]
   name: string
-  flds: Array<AnkiField>
-  tmpls: AnkiTemplate[]
+  flds: Array<Field>
+  tmpls: Template[]
   req: Array<[number, 'any' | 'all', number[]]>
 }
 
@@ -100,15 +120,20 @@ const defaultDeck: DeckProps = {
 }
 
 async function writeToArray(
-  deck: Deck,
+  // deno-lint-ignore no-explicit-any
+  deck: Deck<any, any, any>,
+  deckId: number,
+  deckName: string,
+  deckDesc: string,
+  fields: string[] = [],
+  watch: string[] = [],
+  templates: Template[] = [],
   sortField: string | void,
   media: Media = [],
 ) {
-  const { id, fields = [], watch = [] } = deck
   const sortFieldIndex = Math.max(sortField ? fields.indexOf(sortField) : 0, 0)
   const fieldNames = fields.map((name: string) => ({ name }))
   fieldNames.unshift(fieldNames.splice(sortFieldIndex, 1)[0])
-
   const guidComponentNames = (watch.length) ? watch : fields
 
   const decksArr: Array<{
@@ -122,14 +147,14 @@ async function writeToArray(
       guid: string
     }>
   }> = [{
-    id: deck.idNum,
-    name: deck.name,
-    desc: deck.desc,
-    notes: Object.values(deck.notes).map((note) => ({
+    id: deckId,
+    name: deckName,
+    desc: deckDesc,
+    notes: Object.values(deck.cards).map((card) => ({
       model: {
-        id: deck.idNum || 0,
-        name: deck.name || '',
-        did: deck.idNum || 1,
+        id: deckId || 0,
+        name: deckName || '',
+        did: deckId || 1,
         css: `.card {
           font-family: arial;
           font-size: 20px;
@@ -150,12 +175,9 @@ async function writeToArray(
         type: 0,
         usn: 0,
         vers: [],
-        req: deck.getTemplates().map((
-          _: Template,
-          index: number,
-        ) => [index, 'all', [0]]),
+        req: templates.map((_: Template, index: number) => [index, 'all', [0]]),
         flds: (fieldNames || [])
-          .map((field: Partial<AnkiField>, ord: number): AnkiField => ({
+          .map((field: Partial<Field>, ord: number): Field => ({
             name: field.name || '',
             ord,
             sticky: field.sticky || false,
@@ -164,31 +186,30 @@ async function writeToArray(
             size: field.size || 20,
             media: field.media || [],
           })),
-        tmpls: deck.getTemplates()
-          .map((template: Template) => ({
-            name: template.id,
-            qfmt: template.question,
-            afmt: template.answer,
-          }))
-          .map((tmpl: Partial<AnkiTemplate>, ord: number): AnkiTemplate => ({
+        tmpls: templates
+          .map((tmpl: Partial<Template>, ord: number): Template => ({
             name: '',
             qfmt: '',
             afmt: '',
             bqfmt: '',
             bafmt: '',
             ord,
-            did: deck.idNum,
+            did: deckId,
             ...tmpl,
           })),
         mod: new Date().getTime() || 0,
       },
       fields: fieldNames.map(({ name }: { name: string }) =>
-        String((note as Note).content[name])
+        // deno-lint-ignore no-explicit-any
+        String((card as Card<any, any, any>).content[name])
       ),
       tags: [],
       guid: ankiHash(
-        [id].concat(guidComponentNames
-          .map((field: string) => String((note as Note).content[field]))),
+        [String(deckId)].concat(guidComponentNames
+          .map((field: string) =>
+            // deno-lint-ignore no-explicit-any
+            String((card as Card<any, any, any>).content[field])
+          )),
       ),
     })),
   }]

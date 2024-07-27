@@ -89,35 +89,3 @@ const deckB = fromTSV(
 // You can even export into an Anki deck (but no importing quite yet)
 Deno.writeFile('my-deck.apkg', await toAPKG(deckA))
 ```
-
-# Components
-
-We also have web components for creating your own app! Use them in your Javascript framework of choice.
-
-```jsx
-import { FlashCard } from 'jsr:@flashcard/components'
-
-customElements.define('flash-card', Flashcard)
-
-export default function MyComponent() {
-  const currCard = deck.getNext()
-  const { question, answer } = currCard.render()
-  return (
-    <div>
-      <flash-card
-        question={question}
-        answer={answer}
-        flipped={false}
-        onClick={() => /* insert logic here */}
-      />
-      <button onClick={() => currCard.answer(0)}>Fail!</button>
-      <button onClick={() => currCard.answer(3)}>Decent!</button>
-      <button onClick={() => currCard.answer(5)}>Perfect!</button>
-    </div>
-  )
-}
-```
-
-### More Examples
-
-You can see more examples [in the examples directory](./examples)

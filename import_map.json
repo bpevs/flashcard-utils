@@ -1,9 +1,0 @@
-{
-  "imports": {
-    "@flashcard/adapters": "./adapters/mod.ts",
-    "@flashcard/components": "./components/mod.ts",
-    "@flashcard/core": "./core/mod.ts",
-    "@flashcard/schedulers": "./schedulers/mod.ts",
-    "@flashcard/utils": "./utils/mod.ts"
-  }
-}

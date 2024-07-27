@@ -1,12 +1,13 @@
-import { join } from 'jsr:@std/path@0.216'
-import { ensureDir } from 'jsr:@std/fs@0.216'
-import { writeAll } from 'jsr:@std/io@0.216'
-import type { Deck, Note } from '@flashcard/core'
+import { join } from '@std/path'
+import { ensureDir } from '@std/fs'
+import { writeAll } from '@std/io'
+import type { Card, Deck } from '../core/mod.ts'
 
 const audioDir = './audio'
 
 export default async function generateAudio(
-  deck: Deck,
+  // deno-lint-ignore no-explicit-any
+  deck: Deck<any, any, any>,
   options: {
     locale: string
     voiceId: string
@@ -14,7 +15,8 @@ export default async function generateAudio(
     apiKey: string
     fromField: string
   },
-): Promise<Deck> {
+  // deno-lint-ignore no-explicit-any
+): Promise<Deck<any, any, any>> {
   const { locale, voiceId, apiRegion, apiKey, fromField } = options
   await ensureDir(audioDir)
   const existingAudioFiles: Set<string> = new Set()
@@ -23,16 +25,22 @@ export default async function generateAudio(
     .filter(({ name }) => /.*\.mp3$/.test(name))
     .forEach((file) => existingAudioFiles.add(file.name.normalize('NFC')))
 
-  const notes = Object.values(deck.notes)
-    .filter((note: Note) => !existingAudioFiles.has(getAudioFilename(note.id)))
+  const cards = Object.values(deck.cards)
+    // deno-lint-ignore no-explicit-any
+    .filter((card: Card<any, any, any>) =>
+      !existingAudioFiles.has(getAudioFilename(card.id))
+    )
     .slice(0, 100)
 
-  const texts = notes.map((note: Note) => String(note.content[fromField]))
+  // deno-lint-ignore no-explicit-any
+  const texts = cards.map((card: Card<any, any, any>) =>
+    String(card.content[fromField])
+  )
   const tempAudio = await ttsAzure(texts, locale, voiceId, apiRegion, apiKey)
   console.log('source audio id: ', JSON.stringify(tempAudio))
   if (!tempAudio) throw new Error('tts failed')
   console.log('source audio saved: ', tempAudio)
-  await writeAudioFiles(notes, tempAudio)
+  await writeAudioFiles(cards, tempAudio)
   await Deno.remove('temp.mp3')
   return deck
 }
@@ -77,7 +85,11 @@ async function ttsAzure(
 
 //  1. Splits a joined translation audio clip
 //  2. Writes files for each translation, naming appropriately
-async function writeAudioFiles(notes: Note[], sourceURL: string) {
+async function writeAudioFiles(
+  // deno-lint-ignore no-explicit-any
+  cards: Card<any, any, any>[],
+  sourceURL: string,
+) {
   const MATCH_SILENCE =
     /silence_start: ([\w\.]+)[\s\S]+?silence_end: ([\w\.]+)/g
   const MAX_NOISE_LEVEL = -40
@@ -110,7 +122,7 @@ async function writeAudioFiles(notes: Note[], sourceURL: string) {
       1000 * (parseFloat(nextSilenceEndS) - 0.1),
     )
 
-    const key = notes[count].id
+    const key = cards[count].id
     count = count + 1
 
     const outFile = join(audioDir, getAudioFilename(key))
@@ -129,7 +141,7 @@ async function writeAudioFiles(notes: Note[], sourceURL: string) {
   }
 
   // last file
-  const key = notes[count]?.id
+  const key = cards[count]?.id
   if (!key) {
     console.warn(`Careful about mismatching: ${sourceURL}`)
     return
@@ -142,7 +154,7 @@ async function writeAudioFiles(notes: Note[], sourceURL: string) {
   const convert = new Deno.Command('ffmpeg', { stdout: 'piped', args })
   await convert.output()
 
-  console.log(notes.length, count)
+  console.log(cards.length, count)
 }
 
 export function getAudioFilename(key: string): string {

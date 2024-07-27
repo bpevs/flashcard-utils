@@ -1,35 +1,55 @@
-import { Card, Deck } from '@flashcard/core'
-import { basic } from '@flashcard/schedulers'
-import { assert } from 'jsr:@std/assert@0.216'
+import { assert, assertArrayIncludes, assertEquals } from '@std/assert'
+import basic, {
+  type Quality,
+  type ScheduleCache,
+} from '../../schedulers/basic.ts'
+import Card from '../card.ts'
+import Deck from '../deck.ts'
 
-/**
- * DECK
- *   Sample Use-cases
- *     - Tinder (random-sort, basic-grading)
- *     - Poker (random-sort, multiple-card output, static-deck-order, basic-grading)
- *     - Study SM2 (sm2-sort, sm2-grading)
- */
-Deno.test('Basic', () => {
-  const deckOfCards = new Deck('my-deck', { fields: ['suit', 'value'] })
-  deckOfCards.scheduler = basic
-  deckOfCards.addTemplate('card', '🚲', '{{value}}')
+const suits: readonly string[] = Object.freeze(['♣️', '♦️', '♥️', '♠️'])
+const values: readonly string[] = Object.freeze('123456789TJQKA'.split(''))
 
-  const suits = ['♣️', '♦️', '♥️', '♠️']
+interface PlayingCard {
+  suit: string
+  value: string
+}
+
+function createCardDeck() {
+  const deck = new Deck<PlayingCard, ScheduleCache, Quality>(basic)
+
   suits.forEach((suit) => {
-    for (let value = 1; value < 15; value++) {
+    values.forEach((value) => {
       const content = { suit, value: String(value) }
-
-      if (value === 10) content.value = 'T'
-      if (value === 11) content.value = 'J'
-      if (value === 12) content.value = 'Q'
-      if (value === 13) content.value = 'K'
-      if (value === 14) content.value = 'A'
-
-      deckOfCards.addNote(content.suit + content.value, content)
-    }
+      deck.addCard(content.suit + content.value, content)
+    })
   })
+  return deck
+}
 
-  const next = deckOfCards.getNext(1)[0]
-  assert(next instanceof Card, 'Received next card')
-  assert(next.content.suit, 'Card has suit')
+Deno.test('add and get cards', () => {
+  const deck = createCardDeck()
+  const cards = deck.getNext()
+
+  assertEquals(cards.length, 56)
+
+  cards.forEach((card) => {
+    assert(card instanceof Card, 'Received next card')
+    const { suit, value } = card.content
+    assertArrayIncludes(suits, [suit], 'Card has suit')
+    assertArrayIncludes(values, [value], 'Card has suit')
+  })
+})
+
+Deno.test('answer card', () => {
+  const deck = createCardDeck()
+  const cards = deck.getNext()
+
+  assertEquals(cards.length, 56)
+
+  cards.forEach((card) => {
+    card.answer(deck.scheduler, 1)
+    card.answer(deck.scheduler, 1)
+    card.answer(deck.scheduler, 1)
+  })
+  assertEquals(deck.getNext().length, 0)
 })
