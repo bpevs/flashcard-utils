@@ -1,4 +1,4 @@
-import { Deck, Scheduler } from 'jsr:@flashcard/core'
+import { Deck, Scheduler } from 'jsr:@bpev/flashcards@1.0.0-beta.0'
 
 interface ScheduleCache {
   level: number
@@ -11,8 +11,6 @@ const levelScheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
   ScheduleCache,
   Quality
 >({
-  name: 'level',
-
   init(s: ScheduleCache = { repetition: 0, level: 0 }) {
     return { repetition: s.repetition || 0, level: s.level || 0 }
   },
@@ -45,35 +43,30 @@ const levelScheduler: Scheduler<ScheduleCache, Quality> = new Scheduler<
  *   - utilizing saved user-data
  */
 
+interface KanaCard {
+  kana: string
+  romaji: string
+  english: string
+  kanji: string
+}
+
 /**
  * On script start:
  *   - load json files
  *   - determine user level
  */
-const deck = new Deck('hiragana', {
-  fields: ['kana', 'romaji', 'english', 'kanji'],
-})
-deck.addTemplate('basic', '', '')
-
-deck.scheduler = levelScheduler
+const deck = new Deck<KanaCard, ScheduleCache, Quality>(levelScheduler)
 ;[
-  './data/01_aka.json',
-  './data/02_sata.json',
-  './data/03_naha.json',
+  './examples/cli/data/01_aka.json',
+  './examples/cli/data/02_sata.json',
+  './examples/cli/data/03_naha.json',
 ].map((filepath, index) => {
   const levelNum = index + 1
   const levelKana = new Set()
   const levelData = JSON.parse(Deno.readTextFileSync(filepath))
   levelData.notes.forEach(([kana, romaji, english, kanji]) => {
     levelKana.add(kana)
-    deck.addNote(kana, { kana, romaji, english, kanji })
-  })
-  deck.getCards().forEach((card) => {
-    if (levelKana.has(card.content.kana)) {
-      card.scheduling = card.scheduling || {}
-      card.scheduling['level'] = card.scheduling['level'] || {}
-      card.scheduling['level'] = levelScheduler.init({ level: levelNum })
-    }
+    deck.addCard(kana, { kana, romaji, english, kanji }, { level: levelNum })
   })
 })
 
@@ -91,7 +84,6 @@ function study() {
   const missed = new Set()
   const numTotal = toStudy.length
   let numCorrect = 0
-  console.log()
   for (let i = 0; i < toStudy.length; i++) {
     const card = toStudy[i]
     const { kana, romaji } = card.content
@@ -102,13 +94,13 @@ function study() {
       numCorrect++
       // if correct, and never missed, mark as true
       // if correct, but missed before, just continue
-      if (!missed.has(kana)) card.answer(true)
+      if (!missed.has(kana)) card.answer(levelScheduler, true)
       else missed.delete(kana)
     } else {
       console.log('Incorrect! Correct answer: ', romaji)
       // if never missed, mark as false and re-add to end
       if (!missed.has(kana)) {
-        card.answer(false)
+        card.answer(levelScheduler, false)
         missed.add(kana)
       }
       toStudy.push(card)
@@ -127,8 +119,8 @@ function getUserLevel(): number {
   const savedLevel = parseInt(localStorage.getItem('level')) || 1
   let calculatedLevel = Infinity
 
-  deck.getCards().forEach((card) => {
-    const { level, repetition } = card.scheduling.level
+  deck.cards.forEach((card) => {
+    const { level, repetition } = card.scheduling
     if (!repetition || repetition < 3) {
       calculatedLevel = Math.min(calculatedLevel, level)
     }

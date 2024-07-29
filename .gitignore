@@ -1,6 +1,10 @@
 .DS_Store
+.env
 
 # Build Artifacts
 test.apkg
 */mod.js
 audio
+
+# example/words-to-apkg artifacts
+spanish-or-vanish.apkg

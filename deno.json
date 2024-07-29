@@ -27,11 +27,9 @@
   },
   "tasks": {
     "build": "deno run --allow-read --allow-write --allow-env --allow-run ./build.ts",
-    "check": "deno task check:modules && deno task check:examples",
-    "check:examples": "deno check examples/sandbox/main.ts && deno check examples/sandbox/index.js && deno check examples/words-to-apkg/main.ts",
     "test": "deno fmt && deno lint && deno test -A && deno publish --dry-run --allow-dirty",
     "test:update": "deno test -A -- --update",
-    "example:sandbox": "deno run -A --watch examples/sandbox/main.ts",
+    "example:cli": "deno run -A examples/cli/main.ts",
     "example:words-to-apkg": "deno run -A examples/words-to-apkg/main.ts"
   }
 }
